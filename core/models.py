@@ -120,3 +120,5 @@ class Cadastro_Consultas(models.Model):
     class Meta:
         db_table = 'cadastro_consulta'
 
+
+#teste
