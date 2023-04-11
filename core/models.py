@@ -19,17 +19,20 @@ class Cadastro_Crianca(models.Model):
     )
 
     nr_nascido_vivo = models.ForeignKey(blank=False, on_delete=models.CASCADE)
-    nome_criana = models.TextField(blank=False)
+    nome_crianca = models.TextField(blank=False)
     cpf_crianca = models.IntegerField(null=True, blank=True, max_length=11)
     data_nasc = models.DateField(blank=False)
     cidade = models.TextField(blank=False)
     estado = models.TextField(blank=False)
+    cep = models.TextField(blank=False)
+    bairro = models.TextField(blank=False)
+    rua =  models.TextField(blank=False)
+    numero = models.TextField(blank=False)
     nr_cartao_sus = models.IntegerField(blank=False)
     sexo = models.CharField(choices= CHOICES_SEXO, max_length=20)
     etnia = models.CharField(choices= CHOICES_ETNIA, max_length=20)
     tipo_sanguineo = models.TextField(blank=False)
-    #endereco = models.CharField()
-    nome_mae = models.TextField(blank=True)
+    nome_mae = models.TextField(blank=False)
     nome_pai = models.TextField(blank=True)
     data_criacao_registro = models.DateTimeField(default=timezone.now)
     
@@ -41,35 +44,20 @@ class Cadastro_Crianca(models.Model):
     
 
 
-class Cadastro_Vacina_Aplicada(models.Model):
-    crianca = models.ForeignKey(Cadastro_Crianca, on_delete=models.CASCADE)
-    id_vacina = models.AutoField(primary_key=True, null=False, blank=False)
-    nome_vacina = models.TextField(blank=False)
-    data_aplicacao = models.DateField(blank=False)
-    lote = models.IntegerField(blank=False)
-    lab_produtor = models.TextField(blank=False)
-    unidade = models.IntegerField(blank=False)
-    assinatura = models.TextField(blank=False)
-
-    def __str__(self):
-        return str(self.id_vacina)
-
-    class Meta:
-        db_table = 'cadastro_vacina_aplicada'
-
-
 
 class Cadastro_Evolucao_Crianca(models.Model):
     crianca = models.ForeignKey(Cadastro_Crianca, on_delete=models.CASCADE)
     id_evolucao = models.AutoField(primary_key=True, null=False, blank=False)
     data_avaliacao = models.DateField(blank=False)
-    idade = models.IntegerField(blank=False)
-    peso = models.IntegerField(blank=False)
-    estatura = models.IntegerField(blank=False)
-    perimetro_cefalico = models.IntegerField(blank=False)
-    imc = models.IntegerField(blank=False)
-    pressao_arterial = models.IntegerField(blank=False)
-    classificacao = models.TextField(blank=False)
+    idade_anos = models.IntegerField(blank=False)
+    idade_meses = models.IntegerField(blank=False)
+    peso = models.FloatField(blank=False)
+    estatura = models.FloatField(blank=False)
+    perimetro_cefalico = models.FloatField(blank=False)
+    imc = models.FloatField(blank=False)
+    pressao_arterial = models.FloatField(blank=False)
+    classificacao_imc = models.TextField(blank=False)
+    temperatura = models.FloatField(blank=False)
 
     def __str__(self):
         return str(self.id_evolucao)
@@ -79,22 +67,28 @@ class Cadastro_Evolucao_Crianca(models.Model):
 
 
 
-class Cadastro_Medico(models.Model):
-    nome_medico = models.TextField(blank=False)
-    cpf_medico = models.IntegerField(blank=False)
-    crm_medico = models.IntegerField(blank=False)
+class Cadastro_Funcionario(models.Model):
+    CHOICES_DOCUMENTO = (
+        ("CRM", "CRM"),
+        ("COREN", "COREN"),
+    )
+
+    id_funcionario = models.AutoField(primary_key=True, null=False, blank=False)
+    nome_funcionario = models.TextField(blank=False)
+    cpf_funcionario = models.IntegerField(blank=False)
+    tipo_documento = models.CharField(choices= CHOICES_DOCUMENTO, max_length=20)
+    numero_documento = models.IntegerField(blank=False)
 
     def __str__(self):
-        return str(self.crm_medico)
+        return str(self.id_funcionario)
 
     class Meta:
-        db_table = 'cadastro_medico'
+        db_table = 'cadastro_funcionario'
 
 
 
 class Unidade_Atentimento(models.Model):
     nome_unidade = models.TextField(blank=False)
-    endereco = models.TextField(blank=False)
 
     def __str__(self):
         return str(self.nome_unidade)
@@ -104,21 +98,36 @@ class Unidade_Atentimento(models.Model):
 
 
 
-class Cadastro_Consultas(models.Model):
+
+class Cadastro_Vacina_Aplicada(models.Model):
     crianca = models.ForeignKey(Cadastro_Crianca, on_delete=models.CASCADE)
-    medico = models.ForeignKey(Cadastro_Medico, on_delete=models.CASCADE)
-    unidade_atendimento = models.ForeignKey(Unidade_Atentimento, on_delete=models.CASCADE)
+    id_vacina = models.AutoField(primary_key=True, null=False, blank=False)
+    nome_vacina = models.TextField(blank=False)
+    data_aplicacao = models.DateField(blank=False)
+    lote = models.IntegerField(blank=False)
+    lab_produtor = models.TextField(blank=False)
+    unidade = models.ForeignKey(Unidade_Atentimento, on_delete=models.CASCADE)
+    dados_funcionario = models.ForeignKey(Cadastro_Funcionario, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.id_vacina)
+
+    class Meta:
+        db_table = 'cadastro_vacina_aplicada'
+
+
+
+class Cadastro_Consultas(models.Model):
     id_consulta = models.AutoField(primary_key=True, null=False, blank=False)
+    crianca = models.ForeignKey(Cadastro_Crianca, on_delete=models.CASCADE)
+    medico = models.ForeignKey(Cadastro_Funcionario, on_delete=models.CASCADE)
+    unidade_atendimento = models.ForeignKey(Unidade_Atentimento, on_delete=models.CASCADE)
     data_consulta = models.DateField(blank=False)
     descricao = models.TextField(blank=False)
     obs = models.TextField(blank=True)
-    responsavel_crianca = models.TextField(blank=False)
 
     def __str__(self):
         return str(self.id_consulta)
 
     class Meta:
         db_table = 'cadastro_consulta'
-
-
-#teste
