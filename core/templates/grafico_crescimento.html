@@ -14,15 +14,15 @@
                 var data = google.visualization.arrayToDataTable([
                 ['Idade', 'Estimativa', 'Expenses'],
 
-                ['1 ano',  100,      400],
-                ['2 anos',  700,      460],
-                ['3 anos',  1000,       1120],
-                ['4 anos',  1200,      540],
-                ['5 anos',  1700,      540]
+                ['1 ano',  100,      150],
+                ['2 anos',  700,      750],
+                ['3 anos',  1000,       1050],
+                ['4 anos',  1200,      1250],
+                ['5 anos',  1500,      1550]
                 ]);
 
                 var options = {
-                title: 'Company Performance',
+                title: 'Gráfico Crescimento',
                 curveType: 'function',
                 legend: { position: 'bottom' }
                 };
@@ -34,7 +34,13 @@
             </script>
         </head>
         <body>
-            <div id="curve_chart" style="width: 900px; height: 500px"></div>
+            <div class="content">
+                <h1 style="color: #277064; padding-top: 2%;">Gráfico Crescimento Infantil</h1>
+                <div class="row" style="padding-top: 2%;">
+                    <div class="col-sm-12" style="text-align: center;">
+                        <div id="curve_chart" style="width: 900px; height: 500px"></div>
+                    </div>
+                </div>
         </body>
     </html>
 
