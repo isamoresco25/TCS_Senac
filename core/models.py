@@ -18,7 +18,7 @@ class Cadastro_Crianca(models.Model):
         ("Outro", "Outro"),
     )
 
-    nr_nascido_vivo = models.ForeignKey(blank=False, on_delete=models.CASCADE)
+    nr_nascido_vivo = models.IntegerField(primary_key=True, null=False, blank=False)
     nome_crianca = models.TextField(blank=False)
     cpf_crianca = models.IntegerField(null=True, blank=True, max_length=11)
     data_nasc = models.DateField(blank=False)
@@ -42,8 +42,7 @@ class Cadastro_Crianca(models.Model):
     class Meta:
         db_table = 'cadastro_crianca'
     
-
-
+# teste
 
 class Cadastro_Evolucao_Crianca(models.Model):
     crianca = models.ForeignKey(Cadastro_Crianca, on_delete=models.CASCADE)
