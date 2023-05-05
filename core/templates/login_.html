@@ -14,7 +14,7 @@
             <div class="card-body">
               <h4 class="card-title">Login</h4>
               <p class="card-text">
-                <form>
+                <form action="{% url 'login' %}" method="POST">{% csrf_token %}
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text" style="background-color: #9AEBA3;">Usuário</span>
@@ -26,13 +26,14 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text" style="background-color: #9AEBA3;">Senha</span>
                         </div>
-                        <input type="text" class="form-control" style="background-color: #DAFDBA;">
+                        <input type="password" class="form-control" style="background-color: #DAFDBA;">
                       </div>
                   </form>
               </p>
-              <a href="/" class="btn btn-primary" style="background-color: #277064; border-color: #277064;"><b>Acessar</b></a>
+              <input type="submit" value="Acessar">
+              <!-- <a href="/" class="btn btn-primary" style="background-color: #277064; border-color: #277064;"><b>Acessar</b></a> -->
               <br><br>
-              <a href="esqueci_senha"><b>Esqueci a senha</b></a>
+              <a href="/esqueci_senha"><b>Esqueci a senha</b></a>
             </div>
           </div>
         </div>
