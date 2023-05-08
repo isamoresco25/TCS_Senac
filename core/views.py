@@ -9,19 +9,25 @@ from django.contrib.auth.decorators import login_required
 
 
 def cadastro_usuario(request):
-    if request.method == "GET":
+    if request.method == "GET": 
         return render (request, 'cadastro_usuario.html')
     else:
+        # pega os valores dos campos do html e joga para a variável
         usuario = request.POST.get('usuario')
         email = request.POST.get('email')
         senha = request.POST.get('senha')
 
+        # validação da própria biblioteca User do django verificando se o usuario digitado já é cadastrado
         user = User.objects.filter(username=usuario).first()
         if user:
+            # mensagem de erro se já existe (precisa melhorar pois é apenas uma tela branca)
             return HttpResponse('Já existe um usuário com esse nome!')
+        
+        # cria um usuário no banco na tela de cadastro com as credenciais preenchidas
         user = User.objects.create_user(username=usuario, email=email, password=senha)
+        # salva usuario
         user.save()
-
+        # mensagem de sucesso (precisa melhorar pois é apenas uma tela branca)
         return HttpResponse('Usuário cadastrado com sucesso!')
 
 
@@ -29,22 +35,27 @@ def login(request):
     if request.method == "GET":
         return render (request, 'login_teste.html')
     else:
+        # pega o usuário e a senha digitados no html
         usuario = request.POST.get('usuario')
         senha = request.POST.get('senha')
         
+        # utiliza a biblioteca User para autenticar as credenciais
         user = authenticate(username=usuario, password=senha)
 
         if user is not None:
+            # biblioteca login_django importada, verifica se é valido e acessa a página se for válido
             login_django(request, user)
             return render (request, 'home.html')
+        # se o usuário não for válido, volta para a tela de login
         else:
+            # return render diz que essa função vai ser utilizada no html abaixo
             return render (request, 'login_teste.html')
         
 
 def esqueci_senha(request):
     return render(request, 'esqueci_senha.html')
 
-
+# login_required é uma biblioteca para só acessar a tela se estiver logado
 @login_required(login_url="/login")
 def home(request):
     return render(request, 'home.html')
@@ -77,6 +88,7 @@ def grafico_crescimento(request):
 
 @login_required(login_url="/login")
 def medidas(request):
+    # para pegar do banco tem que utilizar o nome da model.objects.all() -> para pegar todos os objetos cadastrados
     evolucao = Cadastro_Evolucao_Crianca.objects.all()
 
     for i in evolucao:
@@ -96,6 +108,7 @@ def medidas(request):
         else:
             i.classificacao_imc = 'Obesidade classe |||'
 
+    # sempre que for passar alguma variável para o html, tem que passar por dicionário (geralmente chamado context)
     context = {'evolucao': evolucao,
                'imc': imc}
     return render(request, 'medidas.html', context)
