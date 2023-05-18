@@ -91,7 +91,7 @@ def medidas(request):
     # para pegar do banco tem que utilizar o nome da model.objects.all() -> para pegar todos os objetos cadastrados
     evolucao = Cadastro_Evolucao_Crianca.objects.all()
     imc = 0
-    
+
     for i in evolucao:
         altura_metros = i.estatura *0.01
         imc = round(i.peso/altura_metros ** 2, 1)
@@ -122,8 +122,13 @@ def historico_vacinas(request):
 
 
 @login_required(login_url="/login")
-def historico_consultas(request):
-    return render(request, 'historico_consultas.html')
+def historico_consultas_medicas(request):
+    return render(request, 'historico_consultas_medic.html')
+
+
+@login_required(login_url="/login")
+def historico_consultas_odontologicas(request):
+    return render(request, 'historico_consultas_odont.html')
 
 
 # def calculo_IMC(request):

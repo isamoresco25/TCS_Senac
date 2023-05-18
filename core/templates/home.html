@@ -5,11 +5,11 @@
 {% block content %}
 
     <div class="content">
-        <div class="row" style="padding-top: 2%;">
+        <div class="row">
             <div class="col-sm-3">
                 <div class="card" style="width:300px">
                     
-                    <img class="card-img-top" src="../templates/imagens/grafico.webp" alt="Card image">
+                    <img class="card-img-top" src="{% static 'imagens\grafico.webp'%}" alt="Card image">
                     <div class="card-body">
                         <h4 class="card-title">Gráfico de Crescimento</h4>
                         <a href="grafico_crescimento" class="btn btn-primary" style="background-color:#277064; border-color: #277064;">Detalhes</a>
@@ -19,16 +19,25 @@
 
             <div class="col-sm-3">
                 <div class="card" style="width:300px; align-items: center;">
-                    <img class="card-img-top" src="imagens/documento.png" alt="Card image" style="width:140px">
+                    <img class="card-img-top" src="{% static 'imagens\documento.png'%}" alt="Card image" style="width:140px">
                     <div class="card-body">
-                        <h4 class="card-title">Histórico de Consultas</h4>
-                        <a href="historico_consultas" class="btn btn-primary" style="background-color:  #277064; border-color: #277064;">Detalhes</a>
+                        <h4 class="card-title">Histórico de Consultas Médicas</h4>
+                        <a href="historico_consultas_medic" class="btn btn-primary" style="background-color:  #277064; border-color: #277064;">Detalhes</a>
                     </div>
                 </div>
             </div>
             <div class="col-sm-3">
                 <div class="card" style="width:300px; align-items: center;">
-                    <img class="card-img-top" src="imagens/vacinaa.png" alt="Card image" style="width:160px">
+                    <img class="card-img-top" src="{% static 'imagens\documento.png'%}" alt="Card image" style="width:140px">
+                    <div class="card-body">
+                        <h4 class="card-title">Histórico de Consultas Odontológicas</h4>
+                        <a href="historico_consultas_odont" class="btn btn-primary" style="background-color:  #277064; border-color: #277064;">Detalhes</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card" style="width:300px; align-items: center;">
+                    <img class="card-img-top" src="{% static 'imagens\vacinaa.png'%}" alt="Card image" style="width:160px">
                     <div class="card-body">
                         <h4 class="card-title">Histórico de Vacinas</h4>
                         <a href="historico_vacinas" class="btn btn-primary" style="background-color:  #277064; border-color: #277064;">Detalhes</a>
@@ -37,7 +46,7 @@
             </div>
             <div class="col-sm-3">
                 <div class="card" style="width:300px; align-items: center;">
-                    <img class="card-img-top" src="medida2.png" alt="Card image" style="width:190px">
+                    <img class="card-img-top" src="{% static 'imagens\medida2.png'%}" alt="Card image" style="width:190px">
                     <div class="card-body">
                         <h4 class="card-title">Medidas</h4>
                         <a href="medidas" class="btn btn-primary" style="background-color: #277064; border-color: #277064;">Detalhes</a>
@@ -46,5 +55,11 @@
             </div>
         </div>
     </div>
+
+<style>
+    .col-sm-3{
+        padding: 1%;
+    }
+</style>
         
 {% endblock %}
