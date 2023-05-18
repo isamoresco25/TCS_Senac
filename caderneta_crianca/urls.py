@@ -18,8 +18,9 @@ urlpatterns = [
     path('direitos_responsaveis', views.direitos_responsaveis, name='direitos_responsaveis'),
 
     path('grafico_crescimento', views.grafico_crescimento, name='grafico_crescimento'),
-    path('historico_consultas', views.historico_consultas, name='historico_consultas'),
+    path('historico_consultas_medic', views.historico_consultas_medicas, name='historico_consultas_medicas'),
     path('historico_vacinas', views.historico_vacinas, name='historico_vacinas'),
     path('medidas', views.medidas, name='medidas'),
+    path('historico_consultas_odont', views.historico_consultas_odontologicas, name='historico_consultas_odontologicas'),
 
 ]
