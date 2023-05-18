@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Cadastro_Crianca, Cadastro_Evolucao_Crianca, Cadastro_Funcionario, Unidade_Atentimento, Cadastro_Vacina_Aplicada, Cadastro_Consultas
+from .models import Cadastro_Crianca, Cadastro_Evolucao_Crianca, Cadastro_Funcionario, Unidade_Atentimento, Cadastro_Vacina_Aplicada, Cadastro_Consultas_Medicas, Cadastro_Consultas_Odontologicas
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
@@ -90,7 +90,8 @@ def grafico_crescimento(request):
 def medidas(request):
     # para pegar do banco tem que utilizar o nome da model.objects.all() -> para pegar todos os objetos cadastrados
     evolucao = Cadastro_Evolucao_Crianca.objects.all()
-
+    imc = 0
+    
     for i in evolucao:
         altura_metros = i.estatura *0.01
         imc = round(i.peso/altura_metros ** 2, 1)
@@ -108,9 +109,10 @@ def medidas(request):
         else:
             i.classificacao_imc = 'Obesidade classe |||'
 
+        print(imc)
+
     # sempre que for passar alguma variável para o html, tem que passar por dicionário (geralmente chamado context)
-    context = {'evolucao': evolucao,
-               'imc': imc}
+    context = {'evolucao': evolucao, 'imc' : imc}
     return render(request, 'medidas.html', context)
 
 
