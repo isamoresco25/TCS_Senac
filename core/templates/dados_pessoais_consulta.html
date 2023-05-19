@@ -1,0 +1,169 @@
+{% extends "menu_lateral.html" %}
+
+{% load static %}
+
+{% block content %}
+
+    <div class="container">
+            <!-- cabeçalho -->
+            <head>
+                <div class="divCabecalho">
+                    <img src="core\static\imagens\icons8-task-96.png" alt="consulta cadastral">
+                    <h3>Consulta cadastral</h3>
+                </div>        
+            </head>
+
+            <!-- Campos formulário -->
+            <main>
+                <div >
+                    <form class="formulario">
+                            <!-- Número nascido vivo e nome da criança -->
+                            <div class="divs row" style="margin-top: 2%;">
+                                <div class="col-xs-6 col-md-4">
+                                    <label for="nrNascidoVivo" class="form-label">Número nascido vivo:</label>
+                                    <input type="text" readonly class="form-control" style="background-color: #DAFDBA;" required>             
+                                </div>
+
+                                <div class="col-xs-10 col-md-7">
+                                    <label for="nomeCrianca" class="form-label">Nome criança:</label>
+                                    <input type="text" readonly class="form-control" style="background-color: #DAFDBA;" required>                         
+                                </div>
+                            </div>
+
+                            <!-- CPF, data de nascimento, cidade e estado de nascimento -->
+                            <div class="divs row">
+                                <div class="col-xs-6 col-md-3">
+                                    <label for="cpf" class="form-label">CPF:</label>
+                                    <input type="text" readonly class="form-control" style="background-color: #DAFDBA;">   
+                                </div>
+
+                                <div class="col-xs-6 col-md-3">
+                                    <label for="dataNascimento" class="form-label">Data de nascimento:</label>
+                                    <input type="date" readonly class="form-control" style="background-color: #DAFDBA;" required>                           
+                                </div>
+
+                                <div class="col-xs-6 col-md-1">
+                                    <label for="estadoEndereco" class="form-label">Estado:</label>
+                                    <input type="text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                </div>
+
+                                <div class="col-xs-6 col-md-4">
+                                    <label for="cidadeEndereco" class="form-label">Cidade:</label>
+                                    <input type="text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                </div>
+
+                            </div>
+
+                            <!-- CEP, Bairro, Rua e Número -->
+                            <div class="divs row">
+                                <div class="col-xs-6 col-md-2">
+                                    <label for="cepEndereco" class="form-label">CEP:</label>
+                                    <input type="text" readonly class="form-control" style="background-color: #DAFDBA;">   
+                                </div>
+
+                                <div class="col-xs-6 col-md-3">
+                                    <label for="bairroEndereco" class="form-label">Bairro:</label>
+                                    <input type="text" readonly class="form-control" style="background-color: #DAFDBA;">   
+                                </div>
+
+                                <div class="col-xs-6 col-md-4">
+                                    <label for="ruaEndereco" class="form-label">Rua:</label>
+                                    <input type="text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                </div>
+
+                                <div class="col-xs-6 col-md-2">
+                                    <label for="numeroEndereco" class="form-label">Número:</label>
+                                    <input type="text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                </div>
+                            </div>
+
+                            <!-- Número cartão SUS, Sexo, Etnia e Tipo Sanguineo -->
+                            <div class="divs row">
+                                <div class="col-xs-6 col-md-5">
+                                    <label for="nrSus" class="form-label">Número cartão SUS:</label>
+                                    <input type="text" readonly class="form-control" style="background-color: #DAFDBA;">   
+                                </div>
+
+                                <div class="col-xs-8 col-md-2">
+                                    <label for="tipoSanguineo" class="form-label">Sangue:</label>
+                                    <input type="Text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                </div>
+
+                                <div class="col-xs-8 col-md-2">
+                                    <label for="tipoSanguineo" class="form-label">Etnia:</label>
+                                    <input type="Text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                </div>
+
+                                <div class="col-xs-8 col-md-2">
+                                    <label for="tipoSanguineo" class="form-label">Sexo:</label>
+                                    <input type="Text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                </div>
+                            </div>                    
+
+                            <div class="divs row">
+                                <div class="col-xs-4 col-md-6">
+                                    <label for="nrSus" class="form-label">Nome da mãe:</label>
+                                    <input type="text" readonly class="form-control" style="background-color: #DAFDBA;">   
+                                </div>
+
+                                <div class="col-xs-4 col-md-5">
+                                    <label for="tipoSanguineo" class="form-label">Nome do pai:</label>
+                                    <input type="Text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                </div>
+                            </div>                    
+
+                    </form>
+                </div>
+            </main>
+
+            <!-- rodapé -->
+            <footer>
+
+            </footer>
+        </body>
+    </div>
+
+<style>
+
+.camposTexto {
+    border: 0,8cm;
+    border-style: solid;
+    border-color: #277064; 
+}
+
+.formulario{
+    display: flex;
+    flex-direction: column;
+
+    background-color: white;
+
+    border-style: solid;
+    border-width: 1px;
+    border-color: #277064;
+    border-radius: 5%;
+
+    margin-top: 1%;
+    margin-right: 20%;
+    margin-left: 20%;
+}
+
+.divs{    
+    margin-bottom: 2%;
+    margin-left: 10%;
+}
+
+.divCabecalho{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
+    margin-top: 1%;
+}
+
+</style>
+          
+
+     
+
+{% endblock %}

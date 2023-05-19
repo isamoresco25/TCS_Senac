@@ -65,10 +65,15 @@ def home(request):
 def calendario_vacinal(request):
     return render(request, 'calendario_vacinal.html')
 
+#nessas duas precisamos pensar em como validar o usuário para chamar uma ou a outra
+@login_required(login_url="/login")
+def dados_pessoais(request):
+    return render(request, 'dados_pessoais_consulta.html')
 
 @login_required(login_url="/login")
 def dados_pessoais(request):
-    return render(request, 'dados_pessoais.html')
+    return render(request, 'dados_pessoais_cadastro.html')
+
 
 
 @login_required(login_url="/login")
