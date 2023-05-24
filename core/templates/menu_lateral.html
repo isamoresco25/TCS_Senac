@@ -38,6 +38,23 @@
         display: flex;
         justify-content: center;
     }
+    .col-sm-3{
+        padding: 1%;
+    }
+    .card-img-top{
+        width: 35%;
+        
+    }
+    .card-title{
+        align-items: end;
+    }
+    .card {
+        border-radius: 5px;
+        box-shadow: 7px 7px 13px 0px rgba(50, 50, 50, 0.22);
+        transition: all 0.3s ease-out;
+        width:90%; 
+        height: 100%;
+    }
     .row {
         padding-left: 7%;
     }
@@ -48,51 +65,51 @@
         background-color: #45C4B0;
         position: fixed;
         height: 100%;
-        }
+    }
 
         /* Sidebar links */
-        .sidebar a {
+    .sidebar a {
         display: block;
         color: black;
         padding: 16px;
         text-decoration: none;
-        }
+    }
 
         /* Active/current link */
-        .sidebar a.active {
+    .sidebar a.active {
         background-color: #277064;
         color: white;
-        }
+    }
 
         /* Links on mouse-over */
-        .sidebar a:hover:not(.active) {
+    .sidebar a:hover:not(.active) {
         background-color: #277064;
         color: white;
-        }
+    }
 
         /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
-        div.content {
+    .content {
         margin-left: 200px;
         padding: 1px 16px;
         height: 1000px;
-        }
+    }
 
         /* On screens that are less than 700px wide, make the sidebar into a topbar */
-        @media screen and (max-width: 300px) {
+    @media screen and (max-width: 700px) {
         .sidebar {
             width: 100%;
             height: auto;
             position: relative;
         }
         .sidebar a {float: left;}
-        div.content {margin-left: 0;}
+            div.content {margin-left: 0;}
         }
 
         /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
-        @media screen and (max-width: 700px) {
+    @media screen and (max-width: 1000px) {
         .sidebar a {
             text-align: center;
             float: none;
         }
-}
+    }
 </style>
