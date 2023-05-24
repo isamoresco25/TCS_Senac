@@ -36,11 +36,11 @@ def login(request):
         return render (request, 'login_teste.html')
     else:
         # pega o usuário e a senha digitados no html
-        usuario = request.POST.get('usuario')
+        nr_nascido_vivo = request.POST.get('nr_nascido_vivo')
         senha = request.POST.get('senha')
         
         # utiliza a biblioteca User para autenticar as credenciais
-        user = authenticate(username=usuario, password=senha)
+        user = authenticate(username=nr_nascido_vivo, password=senha)
 
         if user is not None:
             # biblioteca login_django importada, verifica se é valido e acessa a página se for válido
@@ -68,7 +68,13 @@ def calendario_vacinal(request):
 
 @login_required(login_url="/login")
 def dados_pessoais(request):
-    return render(request, 'dados_pessoais.html')
+    criancas = Cadastro_Crianca.objects.all()
+
+    for c in criancas:
+        if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
+            crianca = c
+    context = {'crianca' : crianca}
+    return render(request, 'dados_pessoais.html', context)
 
 
 @login_required(login_url="/login")
@@ -89,29 +95,33 @@ def grafico_crescimento(request):
 @login_required(login_url="/login")
 def medidas(request):
     # para pegar do banco tem que utilizar o nome da model.objects.all() -> para pegar todos os objetos cadastrados
-    evolucao = Cadastro_Evolucao_Crianca.objects.all()
-    imc = 0
+    crianca = Cadastro_Crianca.objects.all()
 
-    for i in evolucao:
-        altura_metros = i.estatura *0.01
-        imc = round(i.peso/altura_metros ** 2, 1)
+    for c in crianca:
+        if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
 
-        if imc < 18.5:
-            i.classificacao_imc = 'Abaixo do peso normal'
-        elif 18.5 < imc < 24.9:
-            i.classificacao_imc = 'Peso normal'
-        elif 25.0 < imc < 29.9:
-            i.classificacao_imc = 'Excesso de peso'
-        elif 30.0 < imc < 34.9:
-            i.classificacao_imc = 'Obesidade classe |'
-        elif 35.0 < imc < 39.9:
-            i.classificacao_imc = 'Obesidade classe ||'
-        else:
-            i.classificacao_imc = 'Obesidade classe |||'
+            evolucao = Cadastro_Evolucao_Crianca.objects.filter(crianca=c)
+            imc = 0
 
-        print(imc)
+            for i in evolucao:
+                altura_metros = i.estatura *0.01
+                imc = round(i.peso/altura_metros ** 2, 1)
 
-    # sempre que for passar alguma variável para o html, tem que passar por dicionário (geralmente chamado context)
+                if imc < 18.5:
+                    i.classificacao_imc = 'Abaixo do peso normal'
+                elif 18.5 < imc < 24.9:
+                    i.classificacao_imc = 'Peso normal'
+                elif 25.0 < imc < 29.9:
+                    i.classificacao_imc = 'Excesso de peso'
+                elif 30.0 < imc < 34.9:
+                    i.classificacao_imc = 'Obesidade classe |'
+                elif 35.0 < imc < 39.9:
+                    i.classificacao_imc = 'Obesidade classe ||'
+                else:
+                    i.classificacao_imc = 'Obesidade classe |||'
+
+                print(imc)
+            # sempre que for passar alguma variável para o html, tem que passar por dicionário (geralmente chamado context)
     context = {'evolucao': evolucao, 'imc' : imc}
     return render(request, 'medidas.html', context)
 

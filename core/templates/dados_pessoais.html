@@ -13,12 +13,12 @@
                          <div class="divs row" style="text-align: left;">
                               <div class="col-md-6">
                                    <label for="nrNascidoVivo" class="form-label">Número nascido vivo:</label>
-                                   <input type="text" readonly class="form-control" style="background-color: #DAFDBA;" required>             
+                                   <input type="text" readonly class="form-control" value={{crianca.nr_nascido_vivo}} style="background-color: #DAFDBA;" required>             
                               </div>
 
                               <div class="col-md-6">
                                    <label for="nomeCrianca" class="form-label">Nome criança:</label>
-                                   <input type="text" readonly class="form-control" style="background-color: #DAFDBA;" required>                         
+                                   <input type="text" readonly class="form-control" value={{crianca.nome_crianca}} style="background-color: #DAFDBA;" required>                         
                               </div>
                          </div>
 
@@ -30,7 +30,7 @@
 
                               <div class="col-md-2">
                                    <label for="dataNascimento" class="form-label">Data de nascimento:</label>
-                                   <input type="date" readonly class="form-control" style="background-color: #DAFDBA;" required>                           
+                                   <input type="date" readonly class="form-control" value={{crianca.data_nasc}} style="background-color: #DAFDBA;" required>                           
                               </div>
 
                               <div class="col-md-4">
