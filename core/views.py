@@ -74,6 +74,7 @@ def dados_pessoais(request):
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
             crianca = c
     context = {'crianca' : crianca}
+    
     return render(request, 'dados_pessoais.html', context)
 
 
