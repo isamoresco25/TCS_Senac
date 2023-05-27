@@ -4,8 +4,38 @@
 
 {% block content %}
 
-     <div class="container">
-          <p>onont</p>
+     <div class="content">
+          <h1 style="color: #277064; padding-top: 2%;">Histórico Evolução da Criança</h1>
+          <div class="row" style="padding-top: 2%;">
+          <div class="col-sm-12">
+               <table class="table table-bordered" style="text-align: center;">
+               <thead style="background-color: #13678A; color: white;">
+                    <tr>
+                    <th>DATA DA CONSULTA</th>
+                    <th>DENTE(S)</th>
+                    <th>PROCEDIMENTOS/ORIENTAÇÕESREALIZADAS</th>
+                    <th>DADA DE RETORNO</th>
+                    <th>ASSINATURA/CARIMBO</th>
+                    <th>UNIDADE DE SAÚDE</th>
+                    </tr>
+               </thead>
+     
+               <tbody style="background-color: white;">
+                    {% for h in consultas %}
+                         <tr>
+                         <td>{{h.data_consulta_odont}}</td>
+                         <td>{{h.dentes}}</td>
+                         <td>{{h.procedimento_orientacoes}}</td>
+                         <td>{{h.data_retorno}}</td>
+                         <td>{{h.dentista.nome_funcionario}}</td>
+                         <td>{{h.unidade_saude}}</td>
+                         </tr>
+                    {% endfor %}
+               </tbody>
+               </table>
+          </div>
+          </div>
      </div>
+ 
 
 {% endblock %}

@@ -25,7 +25,7 @@
                          <div class="divs row" style="text-align: left;">
                               <div class="col-md-2">
                                    <label for="cpf" class="form-label">CPF:</label>
-                                   <input type="text" readonly class="form-control" style="background-color: #DAFDBA;">   
+                                   <input type="text" class="form-control" style="background-color: #DAFDBA;">   
                               </div>
 
                               <div class="col-md-2">
@@ -35,7 +35,7 @@
 
                               <div class="col-md-4">
                                    <label for="estadoEndereco" class="form-label">Nome Mãe:</label>
-                                   <input type="text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                   <input type="text" readonly class="form-control" value={{crianca.nome_mae}} style="background-color: #DAFDBA;"/>
                               </div>
 
                               <div class="col-md-4">
@@ -48,51 +48,51 @@
                          <div class="divs row" style="text-align: left;">
                               <div class="col-sm-2">
                                    <label for="cidade" class="form-label">Cidade:</label>
-                                   <input type="text" readonly class="form-control" style="background-color: #DAFDBA;">   
+                                   <input type="text" class="form-control" value={{crianca.cidade_moradia}} style="background-color: #DAFDBA;">   
                               </div>
                             
                               <div class="col-sm-2">
                                    <label for="estado" class="form-label">Estado:</label>
-                                   <input type="Text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                   <input type="Text" class="form-control" value={{crianca.estado_moradia}} style="background-color: #DAFDBA;"/>
                               </div>
                               <div class="col-sm-2">
                                    <label for="cepEndereco" class="form-label">CEP:</label>
-                                   <input type="text" readonly class="form-control" style="background-color: #DAFDBA;">   
+                                   <input type="text" class="form-control" value={{crianca.cep_moradia}} style="background-color: #DAFDBA;">   
                               </div>
                             
                               <div class="col-sm-2">
                                    <label for="bairroEndereco" class="form-label">Bairro:</label>
-                                   <input type="text" readonly class="form-control" style="background-color: #DAFDBA;">   
+                                   <input type="text" class="form-control" value={{crianca.bairro_moradia}} style="background-color: #DAFDBA;">   
                               </div>
 
                               <div class="col-sm-4">
                                    <label for="ruaEndereco" class="form-label">Rua:</label>
-                                   <input type="text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                   <input type="text" class="form-control" value={{crianca.rua_moradia}} style="background-color: #DAFDBA;"/>
                               </div>
 
                               <div class="col-sm-1">
                                    <label for="numeroEndereco" class="form-label">Número:</label>
-                                   <input type="text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                   <input type="text" class="form-control" value={{crianca.numero_moradia}} style="background-color: #DAFDBA;"/>
                               </div>
                               <div class="col-sm-2">
                                    <label for="complemento" class="form-label">Complemento:</label>
-                                   <input type="text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                   <input type="text" class="form-control" style="background-color: #DAFDBA;"/>
                               </div>
                               <div class="col-sm-2">
                                    <label for="nrSus" class="form-label">Número cartão SUS:</label>
-                                   <input type="text" readonly class="form-control" style="background-color: #DAFDBA;">   
+                                   <input type="text" readonly class="form-control" value={{crianca.nr_cartao_sus}} style="background-color: #DAFDBA;">   
                               </div>
                               <div class="col-sm-2">
                                    <label for="tipoSanguineo" class="form-label">Tipo Sanguíneo:</label>
-                                   <input type="Text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                   <input type="Text" readonly class="form-control" value={{crianca.estado_moradia}} style="background-color: #DAFDBA;"/>
                               </div>
                               <div class="col-sm-4">
                                    <label for="etnia" class="form-label">Etnia:</label>
-                                   <input type="Text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                   <input type="Text" readonly class="form-control" value={{crianca.etnia}} style="background-color: #DAFDBA;"/>
                               </div>
                               <div class="col-sm-1">
                                    <label for="tipoSanguineo" class="form-label">Sexo:</label>
-                                   <input type="Text" readonly class="form-control" style="background-color: #DAFDBA;"/>
+                                   <input type="Text" readonly class="form-control" value={{crianca.sexo}} style="background-color: #DAFDBA;"/>
                               </div>
                          </div>                  
                     </div>
