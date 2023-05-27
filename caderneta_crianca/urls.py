@@ -16,6 +16,7 @@ urlpatterns = [
     path('dados_pessoais', views.dados_pessoais, name='dados_pessoais'),
     path('direitos_crianca', views.direitos_crianca, name='direitos_crianca'),
     path('direitos_responsaveis', views.direitos_responsaveis, name='direitos_responsaveis'),
+    path('notificacoes', views.notificacoes, name='notificacoes'),
 
     path('grafico_crescimento', views.grafico_crescimento, name='grafico_crescimento'),
     path('historico_consultas_medic', views.historico_consultas_medicas, name='historico_consultas_medicas'),

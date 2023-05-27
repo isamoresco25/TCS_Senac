@@ -67,6 +67,11 @@ def calendario_vacinal(request):
 
 
 @login_required(login_url="/login")
+def notificacoes(request):
+    return render(request, 'notificacoes.html')
+
+
+@login_required(login_url="/login")
 def dados_pessoais(request):
     criancas = Cadastro_Crianca.objects.all()
 
