@@ -5,6 +5,7 @@
 {% url 'calendario_vacinal' as url_calendario_vacinal %}
 {% url 'direitos_crianca' as url_direitos_crianca %}
 {% url 'direitos_responsaveis' as url_direitos_responsaveis %}
+{% url 'notificacoes' as url_notificacoes %}
 
 <html lang="en">
     <head>
@@ -27,6 +28,7 @@
             <a class="{% if request.path == url_calendario_vacinal %}active{% endif %}" href="calendario_vacinal">Calendário das Vacinas</a>
             <a class="{% if request.path == url_direitos_crianca %}active{% endif %}" href="direitos_crianca">Direitos da Criança</a>
             <a class="{% if request.path == url_direitos_responsaveis %}active{% endif %}"href="direitos_responsaveis">Direitos dos Responsáveis</a>
+            <a class="{% if request.path == url_notificacoes %}active{% endif %}"href="notificacoes">Notificações</a>
         </div>
 
         {% block content %}

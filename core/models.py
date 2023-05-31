@@ -175,7 +175,7 @@ class Cadastro_Consultas_Medicas(models.Model):
     obs = models.TextField(blank=True,  null=True)
 
     def __str__(self):
-        return str(self.id_consulta)
+        return str(self.id_consulta_med)
 
     class Meta:
         db_table = 'cadastro_consultas_medicas'
@@ -186,14 +186,14 @@ class Cadastro_Consultas_Odontologicas(models.Model):
     id_consulta_odont = models.AutoField(primary_key=True, null=False, blank=False)
     crianca = models.ForeignKey(Cadastro_Crianca, on_delete=models.CASCADE)
     dentista = models.ForeignKey(Cadastro_Funcionario, on_delete=models.CASCADE)
+    unidade_saude = models.ForeignKey(Unidade_Atentimento, on_delete=models.CASCADE)
     data_consulta_odont = models.DateField(blank=False,  null=False)
     dentes = models.TextField(blank=True,  null=True)
-    procedimento = models.TextField(blank=True,  null=True)
+    procedimento_orientacoes = models.TextField(blank=True,  null=True)
     data_retorno = models.DateField(blank=True,  null=True)
-    unidade_saude = models.ForeignKey(Unidade_Atentimento, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.id_consulta)
+        return str(self.id_consulta_odont)
 
     class Meta:
         db_table = 'cadastro_consultas_odontologicas'

@@ -67,6 +67,11 @@ def calendario_vacinal(request):
 
 
 @login_required(login_url="/login")
+def notificacoes(request):
+    return render(request, 'notificacoes.html')
+
+
+@login_required(login_url="/login")
 def dados_pessoais(request):
     criancas = Cadastro_Crianca.objects.all()
 
@@ -121,7 +126,6 @@ def medidas(request):
                 else:
                     i.classificacao_imc = 'Obesidade classe |||'
 
-                print(imc)
             # sempre que for passar alguma variável para o html, tem que passar por dicionário (geralmente chamado context)
     context = {'evolucao': evolucao, 'imc' : imc}
     return render(request, 'medidas.html', context)
@@ -129,25 +133,61 @@ def medidas(request):
 
 @login_required(login_url="/login")
 def historico_vacinas(request):
-    return render(request, 'historico_vacinas.html')
+    crianca = Cadastro_Crianca.objects.all()
+
+    for c in crianca:
+        if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
+            vacinas = Cadastro_Vacina_Aplicada.objects.filter(crianca=c)
+
+            
+    context = {'vacinas': vacinas}
+    return render(request, 'historico_vacinas.html', context)
 
 
 @login_required(login_url="/login")
 def historico_consultas_medicas(request):
-    return render(request, 'historico_consultas_medic.html')
+    # para pegar do banco tem que utilizar o nome da model.objects.all() -> para pegar todos os objetos cadastrados
+    crianca = Cadastro_Crianca.objects.all()
+
+    for c in crianca:
+        if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
+
+            evolucao = Cadastro_Evolucao_Crianca.objects.filter(crianca=c)
+            imc = 0
+
+            for i in evolucao:
+                altura_metros = i.estatura *0.01
+                imc = round(i.peso/altura_metros ** 2, 1)
+
+                if imc < 18.5:
+                    i.classificacao_imc = 'Abaixo do peso normal'
+                elif 18.5 < imc < 24.9:
+                    i.classificacao_imc = 'Peso normal'
+                elif 25.0 < imc < 29.9:
+                    i.classificacao_imc = 'Excesso de peso'
+                elif 30.0 < imc < 34.9:
+                    i.classificacao_imc = 'Obesidade classe |'
+                elif 35.0 < imc < 39.9:
+                    i.classificacao_imc = 'Obesidade classe ||'
+                else:
+                    i.classificacao_imc = 'Obesidade classe |||'
+
+            # sempre que for passar alguma variável para o html, tem que passar por dicionário (geralmente chamado context)
+    context = {'evolucao': evolucao, 'imc' : imc}
+    return render(request, 'historico_consultas_medic.html', context)
 
 
 @login_required(login_url="/login")
 def historico_consultas_odontologicas(request):
-    return render(request, 'historico_consultas_odont.html')
+    crianca = Cadastro_Crianca.objects.all()
+
+    for c in crianca:
+        if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
+            consultas = Cadastro_Consultas_Odontologicas.objects.filter(crianca=c)
+
+            
+    context = {'consultas': consultas}
+    return render(request, 'historico_consultas_odont.html', context)
 
 
-# def calculo_IMC(request):
-#     crianca = Cadastro_Evolucao_Crianca.objects.all()
-#     for c in crianca:
-#         imc = c.peso * c.estatura
-        
-#     context = {'imc': imc}
-
-#     return render(request, 'dados_pessoais.html', context)
 

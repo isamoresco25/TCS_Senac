@@ -4,8 +4,41 @@
 
 {% block content %}
 
-     <div class="container">
-
+<div class="content">
+     <h1 style="color: #277064; padding-top: 2%;">Histórico de Vacinas</h1>
+     <div class="row" style="padding-top: 2%;">
+         <div class="col-sm-12">
+             <table class="table table-bordered" style="text-align: center;">
+             <thead style="background-color: #13678A; color: white;">
+                 <tr>
+                 <th>VACINA</th>
+                 <th>DATA</th>
+                 <th>LOTE</th>
+                 <th>LABORATÓRIO PRODUTOR</th>
+                 <th>UNIDADE</th>
+                 <th>ASS/PROFISSIONAL</th>
+                 <th>APLICAÇÃO</th>
+                 <th>REFORÇO</th>
+                 </tr>
+             </thead>
+ 
+             <tbody style="background-color: white;">
+                 {% for v in vacinas %}
+                     <tr>
+                     <td>{{v.nome_vacina}}</td>
+                     <td>{{v.data_aplicacao}}</td>
+                     <td>{{v.lote}}</td>
+                     <td>{{v.lab_produtor}}</td>
+                     <td>{{v.unidade}}</td>
+                     <td>{{v.dados_funcionario.nome_funcionario}}</td>
+                     <td><i class="fa fa-check"></i></td>
+                     <td>Necessário reforço em 1 ano</td>
+                     </tr>
+                 {% endfor %}
+             </tbody>
+             </table>
+         </div>
      </div>
+ </div>
 
 {% endblock %}
