@@ -6,9 +6,9 @@
 
     <div class="content">
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-md-2">
                 <div class="card">
-                    <img class="card-img-top" src="{% static 'imagens\icones\grafico-de-barras.png'%}" alt="Card image" style="padding-bottom: 10%;">
+                    <img class="card-img-top" src="{% static 'imagens\icones\grafico-de-barras.png'%}" alt="Card image">
                     <div class="card-body">
                         <h4 class="card-title">Gráfico de Crescimento</h4>
                         <a href="grafico_crescimento" class="btn btn-primary" style="background-color:#277064; border-color: #277064;">Detalhes</a>
@@ -16,51 +16,313 @@
                 </div>
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-md-2">
                 <div class="card">
                     <img class="card-img-top" src="{% static 'imagens\icones\documentos.png'%}" alt="Card image" >
                     <div class="card-body">
-                        <h4 class="card-title">Histórico de Consultas Médicas</h4>
+                        <h4 class="card-title">Consultas Médicas</h4>
                         <a href="historico_consultas_medic" class="btn btn-primary" style="background-color:  #277064; border-color: #277064;">Detalhes</a>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3">
+
+            <div class="col-md-2">
                 <div class="card">
                     <img class="card-img-top" src="{% static 'imagens\icones\exame-odontologico.png'%}" alt="Card image" >
                     <div class="card-body">
-                        <h4 class="card-title">Histórico de Consultas Odontológicas</h4>
+                        <h4 class="card-title">Consultas Odontológicas</h4>
                         <a href="historico_consultas_odont" class="btn btn-primary" style="background-color:  #277064; border-color: #277064;">Detalhes</a>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3">
+
+            <div class="col-md-2">
                 <div class="card">
                     <img class="card-img-top" src="{% static 'imagens\icones\vacinado.png'%}" alt="Card image" >
                     <div class="card-body">
-                        <h4 class="card-title">Histórico de Vacinas da criança</h4>
+                        <h4 class="card-title">Vacinas da criança</h4>
                         <a href="historico_vacinas" class="btn btn-primary" style="background-color:  #277064; border-color: #277064;">Detalhes</a>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3">
+
+            <div class="col-md-2">
                 <div class="card">
                     <img class="card-img-top" src="{% static 'imagens\icones\metro.png'%}" alt="Card image" >
                     <div class="card-body">
-                        <h4 class="card-title">Medidas</h4>
+                        <h4 class="card-title">Medidas da criança</h4>
                         <a href="medidas" class="btn btn-primary" style="background-color: #277064; border-color: #277064;">Detalhes</a>
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-2">
+                <div class="card">
+                    <img class="card-img-top" src="{% static 'imagens\icones\escola.png'%}" alt="Card image" >
+                    <div class="card-body">
+                        <h4 class="card-title">Observações gerais</h4>
+                        <a href="observacoes" class="btn btn-primary" style="background-color: #277064; border-color: #277064;">Detalhes</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
+            
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="tabelas">
+                    <h3 style="color: #277064; padding-top: 2%; text-align: center;">Últimas consultas médicas</h3>
+                <table class="table table-bordered" style="text-align: center;">
+                    <thead style="background-color: #13678A; color: white;">
+                        <tr>
+                            <th>DATA CONSULTA</th>
+                            <th>IDADE</th>
+                            <th>PESO</th>
+                            <th>ESTATURA</th>
+                        </tr>
+                    </thead>
+        
+                    <tbody style="background-color: white;">
+                        <tr>
+                            <td>{{con_med_l.data_avaliacao}}</td>
+                            <td>{{con_med_l.idade}}</td>
+                            <td>{{con_med_l.peso}} KG</td>
+                            <td>{{con_med_l.estatura}} cm</td>
+                        </tr>
+                    </tbody>
+                    </table>
+    
+                <h3 style="color: #277064; padding-top: 2%; text-align: center;">Últimas consultas odontológicas</h3>
+                <table class="table table-bordered" style="text-align: center;">
+                    <thead style="background-color: #13678A; color: white;">
+                        <tr>
+                            <th>DATA DA CONSULTA</th>
+                            <th>PROCEDIMENTOS</th>
+                            <th>DADA DE RETORNO</th>
+                        </tr>
+                    </thead>
+        
+                    <tbody style="background-color: white;">
+                        <tr>
+                            <td>{{con_odon_l.data_consulta_odont}}</td>
+                            <td>{{con_odon_l.procedimento_orientacoes}}</td>
+                            <td>{{con_odon_l.data_retorno}}</td>
+                        </tr>
+                    </tbody>
+                    </table>
+        
+                <h3 style="color: #277064; padding-top: 2%; text-align: center;">Últimas observações</h3>
+                <table class="table table-bordered" style="text-align: center;">
+                    <thead style="background-color: #13678A; color: white;">
+                        <tr>
+                            <th>DATA</th>
+                            <th>INTERCORRÊNCIA</th>
+                            <th>OBSERVAÇÕES</th>
+                        </tr>
+                    </thead>
+        
+                    <tbody style="background-color: white;">
+                        <tr>
+                            <td>{{obs_l.data_obs}}</td>
+                            <td>{{obs_l.inter_obs}}</td>
+                            <td>{{obs_l.obs}} KG</td>
+                        </tr>
+                    </tbody>
+                </table>    
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="grafico_cresc" style="padding-top: 5%;">
+                    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                    <script type="text/javascript">
+                    google.charts.load('current', {'packages':['corechart']});
+                    google.charts.setOnLoadCallback(drawChart);
+            
+                    function drawChart() {
+                        var data = google.visualization.arrayToDataTable([
+                        ['Idade', 'Estimativa', 'Expenses'],
+            
+                        ['1 ano',  100,      150],
+                        ['2 anos',  700,      750],
+                        ['3 anos',  1000,       1050],
+                        ['4 anos',  1200,      1250],
+                        ['5 anos',  1500,      1550]
+                        ]);
+            
+                        var options = {
+                        title: 'Gráfico Crescimento',
+                        curveType: 'function',
+                        legend: { position: 'bottom' }
+                        };
+            
+                        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+            
+                        chart.draw(data, options);
+                    }
+                    </script>
+                    
+                    <div class="col-sm-12" style="text-align: center;">
+                        <div id="curve_chart" style="width: 100%; height: 43%"></div>
+                    </div>
+                </div>
+
+                <div class="grafico_imc">
+                    
+                    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                    <script type="text/javascript">
+                        google.charts.load("current", {packages:['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+                        function drawChart() {
+                            var data = google.visualization.arrayToDataTable([
+                                ["Data", "Avaliação", { role: "style" } ],
+                                ["Copper", 8.94, "#DAFDBA"],
+                                ["Silver", 10.49, "#DAFDBA"],
+                                ["Gold", 19.30, "#DAFDBA"],
+                                ["Platinum", 21.45, "#DAFDBA"]
+                            ]);
+                            
+                            var view = new google.visualization.DataView(data);
+                            view.setColumns([0, 1,
+                            { calc: "stringify",
+                            sourceColumn: 1,
+                            type: "string",
+                            role: "annotation" },
+                            2]);
+                            
+                            var options = {
+                                title: "Gráfico IMC",
+                                bar: {groupWidth: "95%"},
+                                legend: { position: "none" },
+                            };
+                            var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+                            chart.draw(view, options);
+                        }
+                        </script>
+                    <div id="columnchart_values" style="width: 100%; height: 51%; padding: 2%;"></div>
+                    
+                </div>                 
+            </div>  
+        </div>
+
+
+            <!-- <div class="col-sm-12">
+
+                <div class="col-sm-6">
+                    <h3 style="color: #277064; padding-top: 2%; text-align: center;">Últimas consultas médicas</h3>
+                    <table class="table table-bordered" style="text-align: center;">
+                        <thead style="background-color: #13678A; color: white;">
+                            <tr>
+                                <th>DATA CONSULTA</th>
+                                <th>IDADE</th>
+                                <th>PESO</th>
+                                <th>ESTATURA</th>
+                            </tr>
+                        </thead>
+            
+                        <tbody style="background-color: white;">
+                            <tr>
+                                <td>{{con_med_l.data_avaliacao}}</td>
+                                <td>{{con_med_l.idade}}</td>
+                                <td>{{con_med_l.peso}} KG</td>
+                                <td>{{con_med_l.estatura}} cm</td>
+                            </tr>
+                        </tbody>
+                        </table>
+        
+                    <h3 style="color: #277064; padding-top: 2%; text-align: center;">Últimas consultas odontológicas</h3>
+                    <table class="table table-bordered" style="text-align: center;">
+                        <thead style="background-color: #13678A; color: white;">
+                            <tr>
+                                <th>DATA DA CONSULTA</th>
+                                <th>PROCEDIMENTOS/ORIENTAÇÕESREALIZADAS</th>
+                                <th>DADA DE RETORNO</th>
+                            </tr>
+                        </thead>
+            
+                        <tbody style="background-color: white;">
+                            <tr>
+                                <td>{{con_odon_l.data_consulta_odont}}</td>
+                                <td>{{con_odon_l.procedimento_orientacoes}}</td>
+                                <td>{{con_odon_l.data_retorno}}</td>
+                            </tr>
+                        </tbody>
+                        </table>
+          
+                    <h3 style="color: #277064; padding-top: 2%; text-align: center;">Últimas observações</h3>
+                    <table class="table table-bordered" style="text-align: center;">
+                        <thead style="background-color: #13678A; color: white;">
+                            <tr>
+                                <th>DATA</th>
+                                <th>INTERCORRÊNCIA</th>
+                                <th>OBSERVAÇÕES</th>
+                            </tr>
+                        </thead>
+            
+                        <tbody style="background-color: white;">
+                            <tr>
+                                <td>{{obs_l.data_obs}}</td>
+                                <td>{{obs_l.inter_obs}}</td>
+                                <td>{{obs_l.obs}} KG</td>
+                            </tr>
+                        </tbody>
+                    </table>     
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="grafico">
+                        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                        <script type="text/javascript">
+                        google.charts.load('current', {'packages':['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+                
+                        function drawChart() {
+                            var data = google.visualization.arrayToDataTable([
+                            ['Idade', 'Estimativa', 'Expenses'],
+                
+                            ['1 ano',  100,      150],
+                            ['2 anos',  700,      750],
+                            ['3 anos',  1000,       1050],
+                            ['4 anos',  1200,      1250],
+                            ['5 anos',  1500,      1550]
+                            ]);
+                
+                            var options = {
+                            title: 'Gráfico Crescimento',
+                            curveType: 'function',
+                            legend: { position: 'bottom' }
+                            };
+                
+                            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+                
+                            chart.draw(data, options);
+                        }
+                        </script>
+                    </div>
+                    
+                    <h1 style="color: #277064; padding-top: 2%;">Gráfico Crescimento Infantil</h1>
+                    <div class="row" style="padding-top: 2%;">
+                        <div class="col-sm-12" style="text-align: center;">
+                            <div id="curve_chart" style="width: 100%; height: 500px"></div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        
     </div>
 
 <style>
-    .col-sm-3{
+    
+    .col-md-2{
         padding: 1%;
+        text-align: center;
+    }
+    .col-md-6{
+        padding: 1%;
+        text-align: center;
     }
     .card-img-top{
-        width: 40%;
+        width: 45%;
         
     }
     .card{
