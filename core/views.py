@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Cadastro_Crianca, Cadastro_Evolucao_Crianca, Cadastro_Funcionario, Unidade_Atentimento, Cadastro_Vacina_Aplicada, Cadastro_Consultas_Medicas, Cadastro_Consultas_Odontologicas
+from .models import Cadastro_Crianca, Cadastro_Evolucao_Crianca, Cadastro_Funcionario, Unidade_Atentimento, Cadastro_Vacina_Aplicada, Cadastro_Consultas_Medicas, Cadastro_Consultas_Odontologicas, Observacoes
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
@@ -58,7 +58,20 @@ def esqueci_senha(request):
 # login_required é uma biblioteca para só acessar a tela se estiver logado
 @login_required(login_url="/login")
 def home(request):
-    return render(request, 'home.html')
+    crianca = Cadastro_Crianca.objects.all()
+
+    for c in crianca:
+        if (c.nr_nascido_vivo) == int(request.user.username):
+            obs_l = Observacoes.objects.last()
+            con_med_l= Cadastro_Consultas_Medicas.objects.last()
+            con_odon_l = Cadastro_Consultas_Odontologicas.objects.last()
+
+            
+
+            context = {'obs_l' : obs_l,
+                       'con_med_l' : con_med_l,
+                       'con_odon_l' : con_odon_l}
+    return render(request, 'home.html', context,)
 
 
 @login_required(login_url="/login")
@@ -69,6 +82,33 @@ def calendario_vacinal(request):
 @login_required(login_url="/login")
 def notificacoes(request):
     return render(request, 'notificacoes.html')
+
+
+@login_required(login_url="/login")
+def cad_observacoes(request):
+    if request.method == "GET": 
+        return render (request, 'observacoes.html')
+    else:
+        # pega os valores dos campos do html e joga para a variável
+        data_obs = request.POST.get('data_obs')
+        inter_obs = request.POST.get('inter_obs')
+        obs = request.POST.get('obs')
+
+    #falta terminar       
+    return HttpResponse('Usuário cadastrado com sucesso!')
+    
+
+
+@login_required(login_url="/login")
+def list_observacoes(request):
+    crianca = Cadastro_Crianca.objects.all()
+
+    for c in crianca:
+        if (c.nr_nascido_vivo) == int(request.user.username):
+            obs = Observacoes.objects.all()
+            context = {'obs' : obs}
+
+    return render(request, 'observacoes.html', context)
 
 
 @login_required(login_url="/login")
