@@ -146,6 +146,19 @@ class Cadastro_Funcionario(models.Model):
         db_table = 'cadastro_funcionario'
 
 
+class Observacoes(models.Model):
+    id_obs = models.AutoField(primary_key=True, null=False, blank=False)
+    crianca = models.ForeignKey(Cadastro_Crianca, on_delete=models.CASCADE)
+    data_obs = models.DateField(blank=True,  null=True)
+    inter_obs = models.TextField(blank=True,  null=True)
+    obs = models.TextField(blank=True,  null=True)
+
+    def __str__(self):
+        return str(self.id_obs)
+
+    class Meta:
+        db_table = 'obervacoes'
+
 
 class Cadastro_Vacina_Aplicada(models.Model):
     crianca = models.ForeignKey(Cadastro_Crianca, on_delete=models.CASCADE)
