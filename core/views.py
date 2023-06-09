@@ -93,8 +93,8 @@ def home(request):
 
 @login_required(login_url="/login")
 def calendario_vacinal(request):
-    return render(request, 'cadastro_consultas.html')
-# 'calendario_vacinal.html'
+    return render(request, 'calendario_vacinal.html')
+
 
 @login_required(login_url="/login")
 def notificacoes(request):
