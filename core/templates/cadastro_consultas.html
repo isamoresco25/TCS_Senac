@@ -1,0 +1,88 @@
+{% extends "menu_lateral.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="content" style="text-align: center; padding: 1%;">
+
+    <h1 style="color: #277064; padding-top: 2%; text-align: center;">Cadastro de consultas</h1>
+
+        <div class="row" style="padding-top: 2%;">
+            <div class="col-sm-12">
+                <div class="card" style="width:100%;">
+                    <div class="card-body"> 
+
+                        <!-- Número nascido vivo da criança, nome do médico, unidade de atendimento e data da consulta -->
+                        <div class="divs row" style="text-align: left; padding-bottom: 3%;">
+                            <div class="col-sm-6">
+                                <label for="nroNascidoVivo" class="form-label">Número nascido vivo:</label>
+                                <input type="text" class="form-control" style="background-color: #DAFDBA;" name="nroNascidoVivo" required>                         
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="nomeCrianca" class="form-label">Nome da criança:</label>
+                                <input type="text" readonly class="form-control" value={{crianca.nome_crianca}} name="nomeCrianca" style="background-color: #DAFDBA;" required>                         
+                            </div>
+
+                            <div class="col-sm-6">
+                                <label for="medico" class="form-label">Médico:</label>
+                                <input type="text" class="form-control" name="medico" style="background-color: #DAFDBA;" required>                         
+                            </div>
+                            
+                            <div class="col-sm-6">
+                                <label for="dataConsulta" class="form-label">Data da consulta:</label>
+                                <input type="date" class="form-control" name="dataConsulta" style="background-color: #DAFDBA;" required>                         
+                            </div>    
+
+                        </div>
+
+                        <!-- <div class="divs row" style="text-align: left; padding-bottom: 3%;">
+
+                            <div class="dropdown" style="padding-top: 5%;">
+
+                                <button class="btn dropdown-toggle" style="background-color: #DAFDBA;">
+                                  Unidades de atendimento
+                                </button>
+    
+                                <div class="dropdown-menu">                                        
+                                  <a class="dropdown-item">Unimed</a>
+                                  <a class="dropdown-item">Posto Garcia</a>
+                                  <a class="dropdown-item">Posto Água Verde</a>
+                                  <a class="dropdown-item">Posto Glória</a>
+                                </div>
+    
+                            </div>
+    
+                        </div>     -->
+                         
+                        <!-- Sintomas e observações da consulta -->
+                        <div class="divs row" style="text-align: left; padding-bottom: 3%;"> 
+
+                            <div class="col-sm-6">
+                                <label for="sintomas">Sintomas:</label>
+                                <textarea class="form-control" name="sintomas" rows="5" id="comment" style="background-color: #DAFDBA;"></textarea>
+                            </div>                        
+    
+                            <div class="col-sm-6">
+                                <label for="obs">Observações:</label>
+                                <textarea class="form-control" name="obs" rows="5" id="comment" style="background-color: #DAFDBA;"></textarea>
+                            </div>                        
+
+                        </div>
+
+                        <div class="divs row" style="text-align: left; padding-bottom: 3%;"> 
+
+                            <input class="btn" type="submit" value="Salvar dados" style="color: white; margin-left: 40%; background-color:  #3f8075;">
+
+                            <input class="btn" type="submit" value="Voltar" style="color: white; margin-left: 2%; background-color:  #3f8075;">
+
+                        </div>
+
+                   </div>
+                </div>
+            </div>   
+        </div>
+</div>   
+
+{% endblock %}

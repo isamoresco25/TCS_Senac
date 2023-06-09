@@ -31,6 +31,23 @@ def cadastro_usuario(request):
         return HttpResponse('Usuário cadastrado com sucesso!')
 
 
+@login_required(login_url="/login")
+def cadastro_consulta(request):
+
+    nascidoVivo = request.POST.get('nroNascidoVivo')
+    medico = request.POST.get('medico')
+    dataConsulta = request.POST.get('dataConsulta')
+    sintomas = request.POST.get('sintomas')
+    obs = request.POST.get('obs')
+    crianca = Cadastro_Crianca.objects.filter(nr_nascido_vivo=nascidoVivo)
+
+    consulta = Cadastro_Consultas_Medicas.objects.create(crianca = crianca, medico = medico, unidade_atendimento = 0, data_consulta_med = dataConsulta, descricao = sintomas, obs = obs)
+    consulta.save()
+
+    context = {'nomeCrianca': crianca}
+    return render(request, 'cadastro_consulta.html', context)
+
+
 def login(request):
     if request.method == "GET":
         return render (request, 'login_teste.html')
@@ -76,8 +93,8 @@ def home(request):
 
 @login_required(login_url="/login")
 def calendario_vacinal(request):
-    return render(request, 'calendario_vacinal.html')
-
+    return render(request, 'cadastro_consultas.html')
+# 'calendario_vacinal.html'
 
 @login_required(login_url="/login")
 def notificacoes(request):
