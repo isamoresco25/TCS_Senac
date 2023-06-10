@@ -1,0 +1,100 @@
+{% extends "menu_lateral.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="content" style="text-align: center; padding: 1%;">
+    <div class="row" style="padding-top: 2%;">
+        <div class="col-sm-12">
+            <div class="card" style="width:100%;">                
+                <div class="card-body"> 
+
+                    <h1>Termo de consentimento</h1>
+
+                    <div style="text-align: left; padding-top: 3%;">
+                        <p>1 - Autorizo os Serviços de Saúde a usar a plataforma de prática de telessaúde para telecomunicações para avaliar, testar e diagnosticar minha condição médica.</p>
+                        <p>2 - Eu entendo que dificuldades técnicas podem ocorrer antes ou durante as sessões de telessaúde e minha consulta não pode ser iniciada ou encerrada como planejado. </p>
+                        <p>3 - Aceito que os profissionais possam entrar em contato com sessões interativas com videochamada; no entanto, fui informado de que as sessões podem ser conduzidas por meio de comunicação de voz normal, se os requisitos técnicos, como velocidade da Internet, não puderem ser atendidos.</p>    
+                        <p>4 - Eu entendo que meu seguro atual pode não cobrir as taxas adicionais das práticas de telessaúde e posso ser responsável por qualquer taxa que minha seguradora não cubra.</p>
+                        <p>5 - Concordo que meus  prontuários de telessaúde podem ser mantidos para posterior avaliação, análise e documentação, sendo que em todos eles minhas informações serão mantidas em sigilo.</p>        
+                    </div>    
+
+                    <div>
+                        <label class="switch">
+                            <span class="switch-text">Li, concordo e aceito os termos</span>
+
+                            <div class="switch-wrapper">
+                                <input type="checkbox" />
+                                <span class="switch-button"></span>
+                            </div>
+                        </label>                        
+                    </div>
+                    
+                </div>   
+            </div>
+        </div>
+    </div>            
+
+
+</div>
+
+
+<style>
+.switch{
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    cursor: pointer;
+    margin-right: 5%;
+    margin-top: 3%;
+}
+.switch .switch-text {
+    padding-right: 0.3rem;
+    font-size: 1.1rem;
+}
+.switch .switch-wrapper{
+    display: inline-block;
+    width: 60px;
+    height: 29px;
+    position: relative;
+}
+.switch .switch-wrapper .switch-button{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 40px;
+    background-color: #475569;
+}
+.switch .switch-wrapper input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.switch .switch-wrapper .switch-button ::before {
+    content: "";
+    width: 23px;
+    height: 23px;
+    position: absolute;
+    left: 3px;
+    bottom: 4px;
+    border-radius: 50%;
+    transition: .4s all ease;
+    background-color: white;
+}
+.switch .switch-wrapper input :checked + .switch-button {
+    background-color: #277064;
+}
+
+.switch .switch-wrapper input :checked + .switch-button ::before{
+    transform: translateX(26px);
+}
+
+</style>
+
+{% endblock %}
