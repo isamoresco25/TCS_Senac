@@ -1,5 +1,7 @@
 {% extends "menu_lateral.html" %}
 
+{% url '' %}
+
 {% load static %}
 
 {% block content %}
@@ -75,19 +77,17 @@
                 <table class="table table-bordered" style="text-align: center;">
                     <thead style="background-color: #13678A; color: white;">
                         <tr>
-                            <th>DATA CONSULTA</th>
-                            <th>IDADE</th>
-                            <th>PESO</th>
-                            <th>ESTATURA</th>
+                            <th>DATA</th>
+                            <th>DESCRIÇÃO</th>
+                            <th>OBSERVAÇÕES</th>
                         </tr>
                     </thead>
         
                     <tbody style="background-color: white;">
                         <tr>
-                            <td>{{con_med_l.data_avaliacao}}</td>
-                            <td>{{con_med_l.idade}}</td>
-                            <td>{{con_med_l.peso}} KG</td>
-                            <td>{{con_med_l.estatura}} cm</td>
+                            <td>{{con_med_l.data_consulta_med}}</td>
+                            <td>{{con_med_l.descricao}}</td>
+                            <td>{{con_med_l.obs}} KG</td>
                         </tr>
                     </tbody>
                     </table>
@@ -96,18 +96,18 @@
                 <table class="table table-bordered" style="text-align: center;">
                     <thead style="background-color: #13678A; color: white;">
                         <tr>
-                            <th>DATA DA CONSULTA</th>
+                            <th>DATA</th>
                             <th>PROCEDIMENTOS</th>
                             <th>DADA DE RETORNO</th>
                         </tr>
                     </thead>
         
                     <tbody style="background-color: white;">
-                        <tr>
+                         <tr>
                             <td>{{con_odon_l.data_consulta_odont}}</td>
                             <td>{{con_odon_l.procedimento_orientacoes}}</td>
                             <td>{{con_odon_l.data_retorno}}</td>
-                        </tr>
+                         </tr>
                     </tbody>
                     </table>
         
@@ -176,10 +176,10 @@
                         function drawChart() {
                             var data = google.visualization.arrayToDataTable([
                                 ["Data", "Avaliação", { role: "style" } ],
-                                ["Copper", 8.94, "#DAFDBA"],
-                                ["Silver", 10.49, "#DAFDBA"],
-                                ["Gold", 19.30, "#DAFDBA"],
-                                ["Platinum", 21.45, "#DAFDBA"]
+                                ["25/03/2015", 8.94, "#DAFDBA"],
+                                ["13/05/2015", 10.49, "#DAFDBA"],
+                                ["29/08/2015", 19.30, "#DAFDBA"],
+                                ["05/12/2015", 21.45, "#DAFDBA"]
                             ]);
                             
                             var view = new google.visualization.DataView(data);
