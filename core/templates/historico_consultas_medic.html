@@ -11,26 +11,22 @@
                <table class="table table-bordered" style="text-align: center;">
                <thead style="background-color: #13678A; color: white;">
                     <tr>
-                    <th>Data consulta</th>
-                    <th>Idade</th>
-                    <th>Peso</th>
-                    <th>Estatura</th>
-                    <th>Perímetro cefálico</th>
-                    <th>IMC</th>
-                    <th>Classificação e Conduta para o desenvolvimento</th>
+                         <th>DATA CONSULTA</th>
+                         <th>DESCRIÇÃO</th>
+                         <th>OBSERVAÇÕES</th>
+                         <th>MÉDICO</th>
+                         <th>UNIDADE ATENDIMENTO</th>
                     </tr>
                </thead>
      
                <tbody style="background-color: white;">
-                    {% for h in evolucao %}
+                    {% for h in hist_med %}
                          <tr>
-                         <td>{{h.data_avaliacao}}</td>
-                         <td>{{h.idade}}</td>
-                         <td>{{h.peso}} KG</td>
-                         <td>{{h.estatura}} cm</td>
-                         <td>{{h.perimetro_cefalico}} cm</td>
-                         <td>{{imc}}</td>
-                         <td>{{h.classificacao_imc}}</td>
+                              <td>{{h.data_consulta_med}}</td>
+                              <td>{{h.descricao}}</td>
+                              <td>{{h.obs}}</td>
+                              <td>{{medic}}</td>
+                              <td>{{h.unidade_atendimento}}</td>
                          </tr>
                     {% endfor %}
                </tbody>
