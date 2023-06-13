@@ -83,11 +83,13 @@ def home(request):
             con_med_l= Cadastro_Consultas_Medicas.objects.last()
             con_odon_l = Cadastro_Consultas_Odontologicas.objects.last()
 
-            
 
-            context = {'obs_l' : obs_l,
-                       'con_med_l' : con_med_l,
-                       'con_odon_l' : con_odon_l}
+            imc_grafico = Cadastro_Evolucao_Crianca.objects.all()
+            teste = 10
+
+
+    
+    context = {'obs_l' : obs_l, 'con_med_l' : con_med_l, 'con_odon_l' : con_odon_l, 'teste': teste}
     return render(request, 'home.html', context,)
 
 
@@ -134,6 +136,7 @@ def dados_pessoais(request):
 
     for c in criancas:
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
+
             crianca = c
     context = {'crianca' : crianca}
     
@@ -208,29 +211,14 @@ def historico_consultas_medicas(request):
 
     for c in crianca:
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
-
-            evolucao = Cadastro_Evolucao_Crianca.objects.filter(crianca=c)
-            imc = 0
-
-            for i in evolucao:
-                altura_metros = i.estatura *0.01
-                imc = round(i.peso/altura_metros ** 2, 1)
-
-                if imc < 18.5:
-                    i.classificacao_imc = 'Abaixo do peso normal'
-                elif 18.5 < imc < 24.9:
-                    i.classificacao_imc = 'Peso normal'
-                elif 25.0 < imc < 29.9:
-                    i.classificacao_imc = 'Excesso de peso'
-                elif 30.0 < imc < 34.9:
-                    i.classificacao_imc = 'Obesidade classe |'
-                elif 35.0 < imc < 39.9:
-                    i.classificacao_imc = 'Obesidade classe ||'
-                else:
-                    i.classificacao_imc = 'Obesidade classe |||'
-
+            hist_med = Cadastro_Consultas_Medicas.objects.all()
+            for med in hist_med:
+                medico = Cadastro_Funcionario.objects.get(id_funcionario=med.medico.id_funcionario)
+                medic = medico.nome_funcionario
+                
+    
             # sempre que for passar alguma variável para o html, tem que passar por dicionário (geralmente chamado context)
-    context = {'evolucao': evolucao, 'imc' : imc}
+    context = {'hist_med': hist_med, 'medic': medic}
     return render(request, 'historico_consultas_medic.html', context)
 
 
