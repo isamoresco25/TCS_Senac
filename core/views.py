@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
-
+from datetime import date
 
 
 def cadastro_usuario(request):
@@ -29,23 +29,6 @@ def cadastro_usuario(request):
         user.save()
         # mensagem de sucesso (precisa melhorar pois é apenas uma tela branca)
         return HttpResponse('Usuário cadastrado com sucesso!')
-
-
-@login_required(login_url="/login")
-def cadastro_consulta(request):
-
-    nascidoVivo = request.POST.get('nroNascidoVivo')
-    medico = request.POST.get('medico')
-    dataConsulta = request.POST.get('dataConsulta')
-    sintomas = request.POST.get('sintomas')
-    obs = request.POST.get('obs')
-    crianca = Cadastro_Crianca.objects.filter(nr_nascido_vivo=nascidoVivo)
-
-    consulta = Cadastro_Consultas_Medicas.objects.create(crianca = crianca, medico = medico, unidade_atendimento = 0, data_consulta_med = dataConsulta, descricao = sintomas, obs = obs)
-    consulta.save()
-
-    context = {'nomeCrianca': crianca}
-    return render(request, 'cadastro_consulta.html', context)
 
 
 def login(request):
@@ -72,6 +55,27 @@ def login(request):
 def esqueci_senha(request):
     return render(request, 'esqueci_senha.html')
 
+
+@login_required(login_url="/login")
+def calendario_vacinal(request):
+    return render(request, 'calendario_vacinal.html')
+
+
+@login_required(login_url="/login")
+def direitos_crianca(request):
+    return render(request, 'direitos_crianca.html')
+
+
+@login_required(login_url="/login")
+def direitos_responsaveis(request):
+    return render(request, 'direitos_responsaveis.html')
+
+
+@login_required(login_url="/login")
+def grafico_crescimento(request):
+    return render(request, 'grafico_crescimento.html')
+
+
 # login_required é uma biblioteca para só acessar a tela se estiver logado
 @login_required(login_url="/login")
 def home(request):
@@ -83,39 +87,41 @@ def home(request):
             con_med_l= Cadastro_Consultas_Medicas.objects.last()
             con_odon_l = Cadastro_Consultas_Odontologicas.objects.last()
 
-
             imc_grafico = Cadastro_Evolucao_Crianca.objects.all()
             teste = 10
 
-
-    
     context = {'obs_l' : obs_l, 'con_med_l' : con_med_l, 'con_odon_l' : con_odon_l, 'teste': teste}
     return render(request, 'home.html', context,)
 
 
 @login_required(login_url="/login")
-def calendario_vacinal(request):
-    return render(request, 'calendario_vacinal.html')
-
-
-@login_required(login_url="/login")
 def notificacoes(request):
-    return render(request, 'notificacoes.html')
+    criancas = Cadastro_Crianca.objects.all()
+    data_atual = date.today()
+    mensagens = []
+    vacinas = {'BCG':0, 'Adsorvida':2, 'Influenza':6}
+
+    for c in criancas:
+        if (c.nr_nascido_vivo) == int(request.user.username):
+            
+            data_ultima_consulta = Cadastro_Consultas_Medicas.objects.last().data_consulta_med
+            tempo_consulta_meses = (data_atual - data_ultima_consulta).days//30
+            vacinas_tomadas = Cadastro_Vacina_Aplicada.objects.all()
+            idade_meses = (data_atual - c.data_nasc).days // 30
+
+            if tempo_consulta_meses > 3:
+                mensagens.append(f"Faz mais de {tempo_consulta_meses} meses da sua última consulta médica...Não está na hora de marcar outra?")
+            
+            for v in vacinas_tomadas:
+                nome_vacina_aplicada = v.nome_vacina
+            for nome_vacina, idade_recomendada in vacinas.items():
+                if idade_meses >= idade_recomendada:
+                    if nome_vacina != nome_vacina_aplicada:
+                        mensagens.append(f"A vacina {nome_vacina} está atrasada. Procure um posto de saúde mais próximo!")
 
 
-@login_required(login_url="/login")
-def cad_observacoes(request):
-    if request.method == "GET": 
-        return render (request, 'observacoes.html')
-    else:
-        # pega os valores dos campos do html e joga para a variável
-        data_obs = request.POST.get('data_obs')
-        inter_obs = request.POST.get('inter_obs')
-        obs = request.POST.get('obs')
-
-    #falta terminar       
-    return HttpResponse('Usuário cadastrado com sucesso!')
-    
+    context = {'mensagens' : mensagens}
+    return render(request, 'notificacoes.html', context)
 
 
 @login_required(login_url="/login")
@@ -136,26 +142,10 @@ def dados_pessoais(request):
 
     for c in criancas:
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
-
             crianca = c
     context = {'crianca' : crianca}
     
     return render(request, 'dados_pessoais.html', context)
-
-
-@login_required(login_url="/login")
-def direitos_crianca(request):
-    return render(request, 'direitos_crianca.html')
-
-
-@login_required(login_url="/login")
-def direitos_responsaveis(request):
-    return render(request, 'direitos_responsaveis.html')
-
-
-@login_required(login_url="/login")
-def grafico_crescimento(request):
-    return render(request, 'grafico_crescimento.html')
 
 
 @login_required(login_url="/login")
@@ -199,7 +189,6 @@ def historico_vacinas(request):
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
             vacinas = Cadastro_Vacina_Aplicada.objects.filter(crianca=c)
 
-            
     context = {'vacinas': vacinas}
     return render(request, 'historico_vacinas.html', context)
 
@@ -216,7 +205,6 @@ def historico_consultas_medicas(request):
                 medico = Cadastro_Funcionario.objects.get(id_funcionario=med.medico.id_funcionario)
                 medic = medico.nome_funcionario
                 
-    
             # sempre que for passar alguma variável para o html, tem que passar por dicionário (geralmente chamado context)
     context = {'hist_med': hist_med, 'medic': medic}
     return render(request, 'historico_consultas_medic.html', context)
@@ -230,9 +218,36 @@ def historico_consultas_odontologicas(request):
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
             consultas = Cadastro_Consultas_Odontologicas.objects.filter(crianca=c)
 
-            
     context = {'consultas': consultas}
     return render(request, 'historico_consultas_odont.html', context)
 
 
+# @login_required(login_url="/login")
+# def cad_observacoes(request):
+#     if request.method == "GET": 
+#         return render (request, 'observacoes.html')
+#     else:
+#         # pega os valores dos campos do html e joga para a variável
+#         data_obs = request.POST.get('data_obs')
+#         inter_obs = request.POST.get('inter_obs')
+#         obs = request.POST.get('obs')
 
+#     #falta terminar       
+#     return HttpResponse('Usuário cadastrado com sucesso!')
+
+
+# @login_required(login_url="/login")
+# def cadastro_consulta(request):
+
+#     nascidoVivo = request.POST.get('nroNascidoVivo')
+#     medico = request.POST.get('medico')
+#     dataConsulta = request.POST.get('dataConsulta')
+#     sintomas = request.POST.get('sintomas')
+#     obs = request.POST.get('obs')
+#     crianca = Cadastro_Crianca.objects.filter(nr_nascido_vivo=nascidoVivo)
+
+#     consulta = Cadastro_Consultas_Medicas.objects.create(crianca = crianca, medico = medico, unidade_atendimento = 0, data_consulta_med = dataConsulta, descricao = sintomas, obs = obs)
+#     consulta.save()
+
+#     context = {'nomeCrianca': crianca}
+#     return render(request, 'cadastro_consulta.html', context)
