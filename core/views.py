@@ -33,7 +33,7 @@ def cadastro_usuario(request):
 
 def login(request):
     if request.method == "GET":
-        return render (request, 'login_teste.html')
+        return render (request, 'login.html')
     else:
         # pega o usuário e a senha digitados no html
         nr_nascido_vivo = request.POST.get('nr_nascido_vivo')
@@ -49,7 +49,7 @@ def login(request):
         # se o usuário não for válido, volta para a tela de login
         else:
             # return render diz que essa função vai ser utilizada no html abaixo
-            return render (request, 'login_teste.html')
+            return render (request, 'login.html')
         
 
 def esqueci_senha(request):

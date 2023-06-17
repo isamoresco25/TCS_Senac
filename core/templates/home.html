@@ -87,7 +87,7 @@
                         <tr>
                             <td>{{con_med_l.data_consulta_med}}</td>
                             <td>{{con_med_l.descricao}}</td>
-                            <td>{{con_med_l.obs}} KG</td>
+                            <td>{{con_med_l.obs}}</td>
                         </tr>
                     </tbody>
                     </table>
@@ -125,7 +125,7 @@
                         <tr>
                             <td>{{obs_l.data_obs}}</td>
                             <td>{{obs_l.inter_obs}}</td>
-                            <td>{{obs_l.obs}} KG</td>
+                            <td>{{obs_l.obs}}</td>
                         </tr>
                     </tbody>
                 </table>    
@@ -200,117 +200,10 @@
                         }
                         </script>
                     <div id="columnchart_values" style="width: 100%; height: 51%; padding: 2%;"></div>
-                    
                 </div>                 
             </div>  
         </div>
-
-
-            <!-- <div class="col-sm-12">
-
-                <div class="col-sm-6">
-                    <h3 style="color: #277064; padding-top: 2%; text-align: center;">Últimas consultas médicas</h3>
-                    <table class="table table-bordered" style="text-align: center;">
-                        <thead style="background-color: #13678A; color: white;">
-                            <tr>
-                                <th>DATA CONSULTA</th>
-                                <th>IDADE</th>
-                                <th>PESO</th>
-                                <th>ESTATURA</th>
-                            </tr>
-                        </thead>
-            
-                        <tbody style="background-color: white;">
-                            <tr>
-                                <td>{{con_med_l.data_avaliacao}}</td>
-                                <td>{{con_med_l.idade}}</td>
-                                <td>{{con_med_l.peso}} KG</td>
-                                <td>{{con_med_l.estatura}} cm</td>
-                            </tr>
-                        </tbody>
-                        </table>
-        
-                    <h3 style="color: #277064; padding-top: 2%; text-align: center;">Últimas consultas odontológicas</h3>
-                    <table class="table table-bordered" style="text-align: center;">
-                        <thead style="background-color: #13678A; color: white;">
-                            <tr>
-                                <th>DATA DA CONSULTA</th>
-                                <th>PROCEDIMENTOS/ORIENTAÇÕESREALIZADAS</th>
-                                <th>DADA DE RETORNO</th>
-                            </tr>
-                        </thead>
-            
-                        <tbody style="background-color: white;">
-                            <tr>
-                                <td>{{con_odon_l.data_consulta_odont}}</td>
-                                <td>{{con_odon_l.procedimento_orientacoes}}</td>
-                                <td>{{con_odon_l.data_retorno}}</td>
-                            </tr>
-                        </tbody>
-                        </table>
-          
-                    <h3 style="color: #277064; padding-top: 2%; text-align: center;">Últimas observações</h3>
-                    <table class="table table-bordered" style="text-align: center;">
-                        <thead style="background-color: #13678A; color: white;">
-                            <tr>
-                                <th>DATA</th>
-                                <th>INTERCORRÊNCIA</th>
-                                <th>OBSERVAÇÕES</th>
-                            </tr>
-                        </thead>
-            
-                        <tbody style="background-color: white;">
-                            <tr>
-                                <td>{{obs_l.data_obs}}</td>
-                                <td>{{obs_l.inter_obs}}</td>
-                                <td>{{obs_l.obs}} KG</td>
-                            </tr>
-                        </tbody>
-                    </table>     
-                </div>
-
-                <div class="col-sm-6">
-                    <div class="grafico">
-                        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-                        <script type="text/javascript">
-                        google.charts.load('current', {'packages':['corechart']});
-                        google.charts.setOnLoadCallback(drawChart);
-                
-                        function drawChart() {
-                            var data = google.visualization.arrayToDataTable([
-                            ['Idade', 'Estimativa', 'Expenses'],
-                
-                            ['1 ano',  100,      150],
-                            ['2 anos',  700,      750],
-                            ['3 anos',  1000,       1050],
-                            ['4 anos',  1200,      1250],
-                            ['5 anos',  1500,      1550]
-                            ]);
-                
-                            var options = {
-                            title: 'Gráfico Crescimento',
-                            curveType: 'function',
-                            legend: { position: 'bottom' }
-                            };
-                
-                            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-                
-                            chart.draw(data, options);
-                        }
-                        </script>
-                    </div>
-                    
-                    <h1 style="color: #277064; padding-top: 2%;">Gráfico Crescimento Infantil</h1>
-                    <div class="row" style="padding-top: 2%;">
-                        <div class="col-sm-12" style="text-align: center;">
-                            <div id="curve_chart" style="width: 100%; height: 500px"></div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-        
     </div>
-
 <style>
     
     .col-md-2{
