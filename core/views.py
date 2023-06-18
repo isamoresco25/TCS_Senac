@@ -1,11 +1,13 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Cadastro_Crianca, Cadastro_Evolucao_Crianca, Cadastro_Funcionario, Unidade_Atentimento, Cadastro_Vacina_Aplicada, Cadastro_Consultas_Medicas, Cadastro_Consultas_Odontologicas, Observacoes
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as login_django
 from django.contrib.auth.decorators import login_required
 from datetime import date
+from django.views.decorators.csrf import csrf_protect
+from django.contrib import messages
 
 
 def cadastro_usuario(request):
@@ -31,58 +33,85 @@ def cadastro_usuario(request):
         return HttpResponse('Usuário cadastrado com sucesso!')
 
 
-def login(request):
-    if request.method == "GET":
-        return render (request, 'login_teste.html')
-    else:
-        # pega o usuário e a senha digitados no html
-        nr_nascido_vivo = request.POST.get('nr_nascido_vivo')
-        senha = request.POST.get('senha')
-        
-        # utiliza a biblioteca User para autenticar as credenciais
-        user = authenticate(username=nr_nascido_vivo, password=senha)
+def login_user(request):
+    return render (request, 'login.html')
 
+@csrf_protect
+def submit_login(request):
+    if request.POST:
+        username = request.POST.get('usuario')
+        password = request.POST.get('senha')
+        crianca = Cadastro_Crianca.objects.all()
+
+        user = authenticate(username=username, password=password)
         if user is not None:
-            # crianca = Cadastro_Crianca.objects.all()
-
-            # for c in crianca : 
-            #     if (c.nr_nascido_vivo) == int(request.user.username):
-
-            # biblioteca login_django importada, verifica se é valido e acessa a página se for válido
             login_django(request, user)
-            return render (request, 'termo_consentimento.html')
-        # se o usuário não for válido, volta para a tela de login
+            for c in crianca:
+                if c.termo_consentimento == True:
+                    return redirect ('/')
+                else:
+                    return render (request, 'termo_consentimento.html')
         else:
-            # return render diz que essa função vai ser utilizada no html abaixo
-            return render (request, 'login_teste.html')
+            messages.error(request, 'Usuário ou senha inválidos')
+    return redirect('/login')
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('/login')
+
+@login_required(login_url='/login')
+def index(request):
+    return render (request, 'index.html')
+
+# @csrf_protect
+# def login(request):
+#     if request.method == "GET":
+#         return render (request, 'login.html')
+#     else:
+#         # pega o usuário e a senha digitados no html
+#         usuario = request.POST.get('usuario')
+#         senha = request.POST.get('senha')
+        
+#         # utiliza a biblioteca User para autenticar as credenciais
+#         user = authenticate(username=usuario, password=senha)
+
+#         if user is not None:
+#             # biblioteca login_django importada, verifica se é valido e acessa a página se for válido
+#             login_django(request, user)
+#             return render (request, 'home.html')
+#         # se o usuário não for válido, volta para a tela de login
+#         else:
+#             # return render diz que essa função vai ser utilizada no html abaixo
+#             return render (request, 'login.html')
         
 
 def esqueci_senha(request):
     return render(request, 'esqueci_senha.html')
 
 
-@login_required(login_url="/login")
+@login_required(login_url='/login')
 def calendario_vacinal(request):
     return render(request, 'calendario_vacinal.html')
 
 
-@login_required(login_url="/login")
+@login_required(login_url='/login')
 def direitos_crianca(request):
     return render(request, 'direitos_crianca.html')
 
 
-@login_required(login_url="/login")
+@login_required(login_url='/login')
 def direitos_responsaveis(request):
     return render(request, 'direitos_responsaveis.html')
 
 
-@login_required(login_url="/login")
+@login_required(login_url='/login')
 def grafico_crescimento(request):
     return render(request, 'grafico_crescimento.html')
 
 
 # login_required é uma biblioteca para só acessar a tela se estiver logado
-@login_required(login_url="/login")
+@login_required(login_url='/login')
 def home(request):
     crianca = Cadastro_Crianca.objects.all()
 
@@ -99,7 +128,7 @@ def home(request):
     return render(request, 'home.html', context,)
 
 
-@login_required(login_url="/login")
+@login_required(login_url='/login')
 def notificacoes(request):
     criancas = Cadastro_Crianca.objects.all()
     data_atual = date.today()
@@ -129,7 +158,7 @@ def notificacoes(request):
     return render(request, 'notificacoes.html', context)
 
 
-@login_required(login_url="/login")
+@login_required(login_url='/login')
 def list_observacoes(request):
     crianca = Cadastro_Crianca.objects.all()
 
@@ -141,7 +170,7 @@ def list_observacoes(request):
     return render(request, 'observacoes.html', context)
 
 
-@login_required(login_url="/login")
+@login_required(login_url='/login')
 def dados_pessoais(request):
     criancas = Cadastro_Crianca.objects.all()
 
@@ -153,7 +182,7 @@ def dados_pessoais(request):
     return render(request, 'dados_pessoais.html', context)
 
 
-@login_required(login_url="/login")
+@login_required(login_url='/login')
 def medidas(request):
     # para pegar do banco tem que utilizar o nome da model.objects.all() -> para pegar todos os objetos cadastrados
     crianca = Cadastro_Crianca.objects.all()
@@ -186,7 +215,7 @@ def medidas(request):
     return render(request, 'medidas.html', context)
 
 
-@login_required(login_url="/login")
+@login_required(login_url='/login')
 def historico_vacinas(request):
     crianca = Cadastro_Crianca.objects.all()
 
@@ -198,7 +227,7 @@ def historico_vacinas(request):
     return render(request, 'historico_vacinas.html', context)
 
 
-@login_required(login_url="/login")
+@login_required(login_url='/login')
 def historico_consultas_medicas(request):
     # para pegar do banco tem que utilizar o nome da model.objects.all() -> para pegar todos os objetos cadastrados
     crianca = Cadastro_Crianca.objects.all()
@@ -215,7 +244,7 @@ def historico_consultas_medicas(request):
     return render(request, 'historico_consultas_medic.html', context)
 
 
-@login_required(login_url="/login")
+@login_required(login_url='/login')
 def historico_consultas_odontologicas(request):
     crianca = Cadastro_Crianca.objects.all()
 

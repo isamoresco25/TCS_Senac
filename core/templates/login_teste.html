@@ -15,13 +15,13 @@
             <div class="card-body">
                 <h4 class="card-title">Login</h4>
                 <p class="card-text">
-                    <form action="{% url 'login' %}" method="POST">{% csrf_token %}
+                    <form method="POST">{% csrf_token %}
 
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" style="background-color: #9AEBA3;">Número Nascido Vivo</span>
                             </div>
-                            <input type="text" class="form-control" style="background-color: #DAFDBA;" name="nr_nascido_vivo">
+                            <input type="text" class="form-control" style="background-color: #DAFDBA;" name="usuario">
                         </div>
 
                         <div class="input-group mb-3">
