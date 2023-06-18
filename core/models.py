@@ -74,7 +74,7 @@ class Cadastro_Crianca(models.Model):
     cep_moradia = models.TextField(blank=False,  null=False)
     cidade_moradia = models.TextField(blank=False,  null=False)
     estado_moradia = models.TextField(blank=False,  null=False)
-    tipo_moradia = models.CharField(choices= CHOICES_MORADIA, max_length=40)
+    tipo_moradia = models.TextField(blank=True,  null=True)
     ponto_referencia = models.TextField(blank=True,  null=True)
     telefone_responsavel = models.IntegerField(null=False, blank=False, max_length=13)
     email_responsavel = models.TextField(blank=False,  null=False)
@@ -96,6 +96,7 @@ class Cadastro_Crianca(models.Model):
 
     unidade_educacional = models.TextField(null=True, blank=True)
     assistencia_social = models.TextField(blank=True,  null=True)
+    termo_consentimento = models.BooleanField(blank=True,  null=True)
     data_criacao_registro = models.DateTimeField(default=timezone.now)
     
     def __str__(self):
