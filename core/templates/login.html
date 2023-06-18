@@ -28,21 +28,26 @@
                     <h4 class="mt-1 mb-5 pb-1">Caderneta da Criança Digital</h4>
                   </div>
   
-                  <form action="{% url 'home' %}" method="post">
+                  <form action="submit", method="POST">
                     {% csrf_token %}
                     <p style="text-align: center;">Página de acesso</p>
   
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="nr_nascido_vivo">Número Nascido Vivo:</label>
-                      <input type="text" class="form-control" style="background-color: #DAFDBA;" name="nr_nascido_vivo" placeholder="Número">
+                      <label class="form-label" for="usuario">Número Nascido Vivo:</label>
+                      <input type="text" class="form-control" style="background-color: #DAFDBA;" name="usuario" placeholder="Número">
                     </div>
   
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="senha" name="senha">Senha:</label>
+                      <label class="form-label" for="senha">Senha:</label>
                       <input type="password" class="form-control" style="background-color: #DAFDBA;" name="senha" placeholder="Senha" >
                     </div>
   
                     <div class="text-center pt-1 mb-5 pb-1">
+                      {% for m in messages %}
+                        <div class="alert alert-danger">
+                          <strong>{{ m }}!</strong> 
+                        </div>
+                      {% endfor %}
                       <input type="submit" value="Acessar" class="btn btn-primary" style="background-color: #13678A; border-color: #13678A;">
                     </div>
                   </form>
