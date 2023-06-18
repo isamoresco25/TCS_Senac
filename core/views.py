@@ -33,7 +33,7 @@ def cadastro_usuario(request):
 
 def login(request):
     if request.method == "GET":
-        return render (request, 'login.html')
+        return render (request, 'login_teste.html')
     else:
         # pega o usuário e a senha digitados no html
         nr_nascido_vivo = request.POST.get('nr_nascido_vivo')
@@ -43,13 +43,18 @@ def login(request):
         user = authenticate(username=nr_nascido_vivo, password=senha)
 
         if user is not None:
+            # crianca = Cadastro_Crianca.objects.all()
+
+            # for c in crianca : 
+            #     if (c.nr_nascido_vivo) == int(request.user.username):
+
             # biblioteca login_django importada, verifica se é valido e acessa a página se for válido
             login_django(request, user)
-            return render (request, 'home.html')
+            return render (request, 'termo_consentimento.html')
         # se o usuário não for válido, volta para a tela de login
         else:
             # return render diz que essa função vai ser utilizada no html abaixo
-            return render (request, 'login.html')
+            return render (request, 'login_teste.html')
         
 
 def esqueci_senha(request):
