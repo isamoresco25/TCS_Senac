@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from datetime import date
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
+from googleapiclient.discovery import build
+import json
 
 
 def cadastro_usuario(request):
@@ -64,27 +66,6 @@ def logout_user(request):
 def index(request):
     return render (request, 'index.html')
 
-# @csrf_protect
-# def login(request):
-#     if request.method == "GET":
-#         return render (request, 'login.html')
-#     else:
-#         # pega o usuário e a senha digitados no html
-#         usuario = request.POST.get('usuario')
-#         senha = request.POST.get('senha')
-        
-#         # utiliza a biblioteca User para autenticar as credenciais
-#         user = authenticate(username=usuario, password=senha)
-
-#         if user is not None:
-#             # biblioteca login_django importada, verifica se é valido e acessa a página se for válido
-#             login_django(request, user)
-#             return render (request, 'home.html')
-#         # se o usuário não for válido, volta para a tela de login
-#         else:
-#             # return render diz que essa função vai ser utilizada no html abaixo
-#             return render (request, 'login.html')
-        
 
 def esqueci_senha(request):
     return render(request, 'esqueci_senha.html')
@@ -107,6 +88,8 @@ def direitos_responsaveis(request):
 
 @login_required(login_url='/login')
 def grafico_crescimento(request):
+
+
     return render(request, 'grafico_crescimento.html')
 
 
@@ -117,14 +100,33 @@ def home(request):
 
     for c in crianca:
         if (c.nr_nascido_vivo) == int(request.user.username):
-            obs_l = Observacoes.objects.last()
-            con_med_l= Cadastro_Consultas_Medicas.objects.last()
-            con_odon_l = Cadastro_Consultas_Odontologicas.objects.last()
+            ultima_obs = Observacoes.objects.last()
+            ultima_consulta_odontologica = Cadastro_Consultas_Odontologicas.objects.last()
+            ultima_consulta_medica = Cadastro_Consultas_Medicas.objects.last()
 
-            imc_grafico = Cadastro_Evolucao_Crianca.objects.all()
-            teste = 10
+            #dados para o grafico crescimento
+            evolucao_crianca = Cadastro_Evolucao_Crianca.objects.all()
+            dados_grafico_cresc = [['Idade (meses)', 'Peso', 'Altura']]
+            for e in evolucao_crianca:
+                idade_meses = round((e.idade * 12), 2)
+                dados_grafico_cresc.append([idade_meses, e.peso, e.estatura])
+           
 
-    context = {'obs_l' : obs_l, 'con_med_l' : con_med_l, 'con_odon_l' : con_odon_l, 'teste': teste}
+
+            #dados para gráfico imc
+            consultas_medicas = Cadastro_Consultas_Medicas.objects.all()[:5]  # Limitar a 5 registros
+            dados_grafico_imc = [['Data', 'Valor', {'role': 'style'}]]
+            for c in consultas_medicas:
+                dados_grafico_imc.append([c.data_consulta_med.strftime('%d-%m-%Y'), int(c.imc), '#DAFDBA'])    
+            # 1/0   
+
+    context = {
+                'obs_l' : ultima_obs, 
+                'con_med_l' : ultima_consulta_medica, 
+                'con_odon_l' : ultima_consulta_odontologica, 
+                'dados_grafico_imc' : dados_grafico_imc,
+                'dados_grafico_cresc' : dados_grafico_cresc
+            }
     return render(request, 'home.html', context,)
 
 
