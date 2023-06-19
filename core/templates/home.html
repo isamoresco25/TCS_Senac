@@ -136,34 +136,27 @@
                 <div class="grafico_cresc" style="padding-top: 5%;">
                     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                     <script type="text/javascript">
-                    google.charts.load('current', {'packages':['corechart']});
-                    google.charts.setOnLoadCallback(drawChart);
-            
-                    function drawChart() {
-                        var data = google.visualization.arrayToDataTable([
-                        ['Idade', 'Estimativa', 'Expenses'],
-            
-                        ['1 ano',  100,      150],
-                        ['2 anos',  700,      750],
-                        ['3 anos',  1000,       1050],
-                        ['4 anos',  1200,      1250],
-                        ['5 anos',  1500,      1550]
-                        ]);
-            
-                        var options = {
-                        title: 'Gráfico Crescimento',
-                        curveType: 'function',
-                        legend: { position: 'bottom' }
-                        };
-            
-                        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-            
-                        chart.draw(data, options);
-                    }
+                        google.charts.load('current', {'packages':['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+
+                        function drawChart() {
+                            var data = google.visualization.arrayToDataTable({{ dados_grafico_cresc|safe }});
+
+                            var options = {
+                                title: 'Curva de Crescimento Infantil',
+                                curveType: 'function',
+                                legend: { position: 'bottom' },
+                                vAxis: { title: 'Valores' },
+                                hAxis: { title: 'Idade (meses)' }
+                            };
+
+                            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                            chart.draw(data, options);
+                        }
                     </script>
                     
                     <div class="col-sm-12" style="text-align: center;">
-                        <div id="curve_chart" style="width: 100%; height: 43%"></div>
+                        <div id="chart_div" style="width: 100%; height: 43%"></div>
                     </div>
                 </div>
 
@@ -171,37 +164,33 @@
                     
                     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
                     <script type="text/javascript">
-                        google.charts.load("current", {packages:['corechart']});
+                        google.charts.load('current', {'packages':['corechart']});
                         google.charts.setOnLoadCallback(drawChart);
+
                         function drawChart() {
-                            var data = google.visualization.arrayToDataTable([
-                                ["Data", "Avaliação", { role: "style" } ],
-                                ["25/03/2015", 8.94, "#DAFDBA"],
-                                ["13/05/2015", 10.49, "#DAFDBA"],
-                                ["29/08/2015", 19.30, "#DAFDBA"],
-                                ["05/12/2015", 21.45, "#DAFDBA"]
-                            ]);
-                            
-                            var view = new google.visualization.DataView(data);
-                            view.setColumns([0, 1,
-                            { calc: "stringify",
-                            sourceColumn: 1,
-                            type: "string",
-                            role: "annotation" },
-                            2]);
-                            
+                            var data = google.visualization.arrayToDataTable({{ dados_grafico_imc|safe }});
+
                             var options = {
-                                title: "Gráfico IMC",
-                                bar: {groupWidth: "95%"},
-                                legend: { position: "none" },
+                                title: 'Gráfico avaliação do IMC',
+                                hAxis: {
+                                    title: 'Data consulta'
+                                },
+                                vAxis: {
+                                    title: 'IMC',
+                                    minValue: 0,
+                                    maxValue: 10
+                                },
+                                legend: { position: 'none' },
                             };
-                            var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
-                            chart.draw(view, options);
+
+                            var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+                            chart.draw(data, options);
                         }
-                        </script>
-                    <div id="columnchart_values" style="width: 100%; height: 51%; padding: 2%;"></div>
-                </div>                 
-            </div>  
+                    </script>
+                    <div class="col-sm-12" style="text-align: center;">
+                        <div id="chart_div" style="width: 100%; height: 51%; padding: 2%;"></div>
+                    </div>
+                </div>  
         </div>
     </div>
 <style>
