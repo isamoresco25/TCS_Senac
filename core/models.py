@@ -187,6 +187,7 @@ class Cadastro_Consultas_Medicas(models.Model):
     data_consulta_med = models.DateField(blank=False,  null=False)
     descricao = models.TextField(blank=False,  null=False)
     obs = models.TextField(blank=True,  null=True)
+    imc = models.TextField(blank=True,  null=True)
 
     def __str__(self):
         return str(self.id_consulta_med)
