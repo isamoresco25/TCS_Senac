@@ -28,11 +28,9 @@
                             </div>    
         
                             <div class="form-check-inline switch">
-                                <label class="form-check-label">
-                                  <input type="checkbox" class="form-check-input" value="">Li, concordo e aceito os termos
-                                </label>
+                                <a href="http://127.0.0.1:8000/home" class="btn btn-info" role="button" style="margin-top: 1%; color: white; margin-left: 30%;">Aceitar os termos</a>                                            
         
-                                <a href="http://127.0.0.1:8000/home" class="btn btn-info" role="button" style="margin-top: 1%;">Enviar termos</a>                                            
+                                <a href="http://127.0.0.1:8000/login" class="btn btn-info" role="button" style="margin-top: 1%; color: white; margin-right: 30%;">Não aceitar termos</a>                                            
                             </div>
         
                         </div>   
@@ -46,7 +44,10 @@
     .switch{
         display: flex;
         justify-content: center;
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-evenly;
+
+        margin-top: 2%;
     }
     
 </style>

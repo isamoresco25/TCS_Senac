@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import date
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
-from googleapiclient.discovery import build
+# from googleapiclient.discovery import build
 import json
 
 
@@ -48,7 +48,11 @@ def submit_login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login_django(request, user)
+                
             for c in crianca:
+                if (c.nr_nascido_vivo) == int(request.user.username) and (c.termo_consentimento == None):
+                    c.nr_nascido_vivo = True
+                
                 if c.termo_consentimento == True:
                     return redirect ('/')
                 else:
@@ -61,11 +65,6 @@ def submit_login(request):
 def logout_user(request):
     logout(request)
     return redirect('/login')
-
-@login_required(login_url='/login')
-def index(request):
-    return render (request, 'index.html')
-
 
 def esqueci_senha(request):
     return render(request, 'esqueci_senha.html')
