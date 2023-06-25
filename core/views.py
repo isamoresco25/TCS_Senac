@@ -8,8 +8,13 @@ from django.contrib.auth.decorators import login_required
 from datetime import date
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
-# from googleapiclient.discovery import build
+from googleapiclient.discovery import build
 import json
+from django.core.mail import send_mail
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from django.conf import settings
 
 
 def cadastro_usuario(request):
@@ -44,30 +49,30 @@ def submit_login(request):
         username = request.POST.get('usuario')
         password = request.POST.get('senha')
         crianca = Cadastro_Crianca.objects.all()
-        
+        check = request.POST.get('check')
+        teste = request.POST.get('teste')
 
+        # termo = False
         user = authenticate(username=username, password=password)
-
         if user is not None:
             login_django(request, user)
-                
-            for c in crianca: 
-
+            for c in crianca:
                 if c.termo_consentimento == True:
                     return redirect ('/')
                 else:
-                    if (c.nr_nascido_vivo) == int(request.user.username) and (c.termo_consentimento == False):
-                        c.termo_consentimento = True
-                        c.save()
-                        return render (request, 'termo_consentimento.html')                    
+                    # termo = not termo
+                    return render (request, 'termo_consentimento.html')
         else:
             messages.error(request, 'Usuário ou senha inválidos')
     return redirect('/login')
 
 
+
+
 def logout_user(request):
     logout(request)
     return redirect('/login')
+
 
 def esqueci_senha(request):
     return render(request, 'esqueci_senha.html')
@@ -108,19 +113,16 @@ def home(request):
 
             #dados para o grafico crescimento
             evolucao_crianca = Cadastro_Evolucao_Crianca.objects.all()
-            dados_grafico_cresc = [['Idade (meses)', 'Peso', 'Altura']]
+            dados_grafico_cresc = [['Idade (meses)', 'Altura']]
             for e in evolucao_crianca:
                 idade_meses = round((e.idade * 12), 2)
-                dados_grafico_cresc.append([idade_meses, e.peso, e.estatura])
+                dados_grafico_cresc.append([idade_meses, e.estatura])
            
-
-
             #dados para gráfico imc
             consultas_medicas = Cadastro_Consultas_Medicas.objects.all()[:5]  # Limitar a 5 registros
             dados_grafico_imc = [['Data', 'Valor', {'role': 'style'}]]
             for c in consultas_medicas:
-                dados_grafico_imc.append([c.data_consulta_med.strftime('%d-%m-%Y'), int(c.imc), '#DAFDBA'])    
-            # 1/0   
+                dados_grafico_imc.append([c.data_consulta_med.strftime('%d-%m-%Y'), float(c.imc), '#DAFDBA'])    
 
     context = {
                 'obs_l' : ultima_obs, 
@@ -129,27 +131,51 @@ def home(request):
                 'dados_grafico_imc' : dados_grafico_imc,
                 'dados_grafico_cresc' : dados_grafico_cresc
             }
+    
     return render(request, 'home.html', context,)
+
+
+def enviar_email(destinatario, assunto, corpo):
+    mensagem = MIMEMultipart()
+    mensagem['From'] = settings.EMAIL_HOST_USER
+    mensagem['To'] = destinatario
+    mensagem['Subject'] = assunto
+
+    # Adicione o corpo do email
+    mensagem.attach(MIMEText(corpo, 'plain'))
+
+    # Crie uma conexão com o servidor SMTP
+    conexao = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+    conexao.starttls()
+    conexao.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+
+    # Envie o email
+    conexao.send_message(mensagem)
+
+    # Feche a conexão
+    conexao.quit()
 
 
 @login_required(login_url='/login')
 def notificacoes(request):
     criancas = Cadastro_Crianca.objects.all()
-    data_atual = date.today()
     mensagens = []
-    vacinas = {'BCG':0, 'Adsorvida':2, 'Influenza':6}
 
     for c in criancas:
         if (c.nr_nascido_vivo) == int(request.user.username):
             
+            data_atual = date.today()   
             data_ultima_consulta = Cadastro_Consultas_Medicas.objects.last().data_consulta_med
-            tempo_consulta_meses = (data_atual - data_ultima_consulta).days//30
             vacinas_tomadas = Cadastro_Vacina_Aplicada.objects.all()
+
+            tempo_consulta_meses = (data_atual - data_ultima_consulta).days//30
             idade_meses = (data_atual - c.data_nasc).days // 30
 
-            if tempo_consulta_meses > 3:
+            if tempo_consulta_meses > 12:
                 mensagens.append(f"Faz mais de {tempo_consulta_meses} meses da sua última consulta médica...Não está na hora de marcar outra?")
             
+            vacinas = {'BCG': 0, 'Adsorvida': 2, 'Influenza': 6}
+
             for v in vacinas_tomadas:
                 nome_vacina_aplicada = v.nome_vacina
             for nome_vacina, idade_recomendada in vacinas.items():
@@ -157,9 +183,8 @@ def notificacoes(request):
                     if nome_vacina != nome_vacina_aplicada:
                         mensagens.append(f"A vacina {nome_vacina} está atrasada. Procure um posto de saúde mais próximo!")
 
-
-    context = {'mensagens' : mensagens}
-    return render(request, 'notificacoes.html', context)
+            context = {'mensagens' : mensagens}
+            return render(request, 'notificacoes.html', context)
 
 
 @login_required(login_url='/login')
@@ -182,6 +207,7 @@ def dados_pessoais(request):
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
             crianca = c
     context = {'crianca' : crianca}
+    # cria_email(request)
     
     return render(request, 'dados_pessoais.html', context)
 
