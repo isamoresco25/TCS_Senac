@@ -51,14 +51,15 @@ def submit_login(request):
         if user is not None:
             login_django(request, user)
                 
-            for c in crianca:                
+            for c in crianca: 
+
                 if c.termo_consentimento == True:
                     return redirect ('/')
                 else:
                     if (c.nr_nascido_vivo) == int(request.user.username) and (c.termo_consentimento == False):
                         c.termo_consentimento = True
                         c.save()
-                    return render (request, 'termo_consentimento.html')
+                        return render (request, 'termo_consentimento.html')                    
         else:
             messages.error(request, 'Usuário ou senha inválidos')
     return redirect('/login')
