@@ -128,3 +128,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 
 LOGOUT_REDIRECT_URL = '/contas/login'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587  # Porta do servidor SMTP
+EMAIL_USE_TLS = True  # Use TLS para conexão segura
+EMAIL_HOST_USER = 'digitalcaderneta@gmail.com'  # Seu endereço de email
+EMAIL_HOST_PASSWORD = 'Cadernetadigital@2023'  # Sua senha de email
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'digitalcaderneta@outlook.com'
+EMAIL_HOST_PASSWORD = 'Cadernetadigital@2023'
+
