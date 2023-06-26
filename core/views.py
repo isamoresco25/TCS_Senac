@@ -122,7 +122,9 @@ def home(request):
             consultas_medicas = Cadastro_Consultas_Medicas.objects.all()[:5]  # Limitar a 5 registros
             dados_grafico_imc = [['Data', 'Valor', {'role': 'style'}]]
             for c in consultas_medicas:
-                dados_grafico_imc.append([c.data_consulta_med.strftime('%d-%m-%Y'), float(c.imc), '#DAFDBA'])    
+                dados_grafico_imc.append([c.data_consulta_med.strftime('%d-%m-%Y'), float(c.imc), '#DAFDBA'])   
+
+            
 
     context = {
                 'obs_l' : ultima_obs, 
@@ -171,7 +173,7 @@ def notificacoes(request):
             tempo_consulta_meses = (data_atual - data_ultima_consulta).days//30
             idade_meses = (data_atual - c.data_nasc).days // 30
 
-            if tempo_consulta_meses > 12:
+            if tempo_consulta_meses > 3:
                 mensagens.append(f"Faz mais de {tempo_consulta_meses} meses da sua última consulta médica...Não está na hora de marcar outra?")
             
             vacinas = {'BCG': 0, 'Adsorvida': 2, 'Influenza': 6}
@@ -181,7 +183,15 @@ def notificacoes(request):
             for nome_vacina, idade_recomendada in vacinas.items():
                 if idade_meses >= idade_recomendada:
                     if nome_vacina != nome_vacina_aplicada:
-                        mensagens.append(f"A vacina {nome_vacina} está atrasada. Procure um posto de saúde mais próximo!")
+                        mensagens.append(f"A vacina {nome_vacina} do(a) {c.nome_crianca} está atrasada. Procure um posto de saúde mais próximo!")
+
+            #envio email
+            destinatarios = ['isamoresco@gmail.com', 'jecarolfagundes@gmail.com', 'leo.freiro@gmail.com', 'rfl_mello@hotmail.com']
+            destinatarios_string = ', '.join(destinatarios)
+            assunto = 'Notificação - Caderneta Digital'
+            corpo = '\n\n'.join(mensagens)
+
+            enviar_email(destinatarios_string, assunto, corpo) 
 
             context = {'mensagens' : mensagens}
             return render(request, 'notificacoes.html', context)
