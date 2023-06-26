@@ -186,12 +186,12 @@ def notificacoes(request):
                         mensagens.append(f"A vacina {nome_vacina} do(a) {c.nome_crianca} está atrasada. Procure um posto de saúde mais próximo!")
 
             #envio email
-            destinatarios = ['isamoresco@gmail.com', 'jecarolfagundes@gmail.com', 'leo.freiro@gmail.com', 'rfl_mello@hotmail.com']
-            destinatarios_string = ', '.join(destinatarios)
+            destinatario = c.email_responsavel
+            # destinatarios_string = ', '.join(destinatarios)
             assunto = 'Notificação - Caderneta Digital'
             corpo = '\n\n'.join(mensagens)
 
-            enviar_email(destinatarios_string, assunto, corpo) 
+            enviar_email(destinatario, assunto, corpo) 
 
             context = {'mensagens' : mensagens}
             return render(request, 'notificacoes.html', context)
