@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from datetime import date
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
-from googleapiclient.discovery import build
 import json
 from django.core.mail import send_mail
 import smtplib
@@ -60,7 +59,10 @@ def submit_login(request):
                 if c.termo_consentimento == True:
                     return redirect ('/')
                 else:
-                    # termo = not termo
+                    if (c.nr_nascido_vivo == int(request.user.username) and (c.termo_consentimento == False)):
+                        c.termo_consentimento = True
+                        c.save()
+
                     return render (request, 'termo_consentimento.html')
         else:
             messages.error(request, 'Usuário ou senha inválidos')
@@ -199,14 +201,24 @@ def notificacoes(request):
 
 @login_required(login_url='/login')
 def list_observacoes(request):
-    crianca = Cadastro_Crianca.objects.all()
-
-    for c in crianca:
-        if (c.nr_nascido_vivo) == int(request.user.username):
-            obs = Observacoes.objects.all()
-            context = {'obs' : obs}
-
+    crianca = Cadastro_Crianca.objects.filter(nr_nascido_vivo=int(request.user.username))
+    obs = Observacoes.objects.filter(crianca__in=crianca)
+    
+    context = {'obs': obs}
     return render(request, 'observacoes.html', context)
+
+def submit_observacoes(request):
+    if request.POST:
+        
+        c = Cadastro_Crianca.objects.get(nr__nascido_vivo=int(request.user.username))
+        data = request.POST.get('data_obs')
+        intercorrencia = request.POST.get('inter_obs')
+        observacao = request.POST.get('obs')
+        
+        nova_obs = Observacoes(crianca = c,  data_obs = data, inter_obs = intercorrencia, obs = observacao)
+        nova_obs.save()
+        1/0
+    return redirect('/')
 
 
 @login_required(login_url='/login')
