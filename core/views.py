@@ -172,8 +172,8 @@ def notificacoes(request):
             destinatarios = ['isamoresco@gmail.com']
             # destinatarios_string = ', '.join(destinatarios)
             assunto = 'Notificação - Caderneta Digital'
-            # corpo = '\n\n'.join(mensagens)
-            corpo = 'lele'
+            corpo = '\n\n'.join(mensagens)
+            # corpo = 'lele'
 
             enviar_email(destinatarios, assunto, corpo) 
 
