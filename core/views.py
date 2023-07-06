@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from datetime import date
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
+from googleapiclient.discovery import build
 import json
 from django.core.mail import send_mail
 import smtplib
@@ -24,7 +25,6 @@ def cadastro_usuario(request):
         usuario = request.POST.get('usuario')
         email = request.POST.get('email')
         senha = request.POST.get('senha')
-
         # validação da própria biblioteca User do django verificando se o usuario digitado já é cadastrado
         user = User.objects.filter(username=usuario).first()
         if user:
@@ -37,10 +37,11 @@ def cadastro_usuario(request):
         user.save()
         # mensagem de sucesso (precisa melhorar pois é apenas uma tela branca)
         return HttpResponse('Usuário cadastrado com sucesso!')
-
+    
 
 def login_user(request):
     return render (request, 'login.html')
+
 
 @csrf_protect
 def submit_login(request):
@@ -69,8 +70,6 @@ def submit_login(request):
     return redirect('/login')
 
 
-
-
 def logout_user(request):
     logout(request)
     return redirect('/login')
@@ -97,8 +96,6 @@ def direitos_responsaveis(request):
 
 @login_required(login_url='/login')
 def grafico_crescimento(request):
-
-
     return render(request, 'grafico_crescimento.html')
 
 
@@ -106,13 +103,11 @@ def grafico_crescimento(request):
 @login_required(login_url='/login')
 def home(request):
     crianca = Cadastro_Crianca.objects.all()
-
     for c in crianca:
         if (c.nr_nascido_vivo) == int(request.user.username):
             ultima_obs = Observacoes.objects.last()
             ultima_consulta_odontologica = Cadastro_Consultas_Odontologicas.objects.last()
             ultima_consulta_medica = Cadastro_Consultas_Medicas.objects.last()
-
             #dados para o grafico crescimento
             evolucao_crianca = Cadastro_Evolucao_Crianca.objects.all()
             dados_grafico_cresc = [['Idade (meses)', 'Altura']]
@@ -126,7 +121,7 @@ def home(request):
             for c in consultas_medicas:
                 dados_grafico_imc.append([c.data_consulta_med.strftime('%d-%m-%Y'), float(c.imc), '#DAFDBA'])   
 
-            
+
 
     context = {
                 'obs_l' : ultima_obs, 
@@ -140,46 +135,32 @@ def home(request):
 
 
 def enviar_email(destinatario, assunto, corpo):
-    mensagem = MIMEMultipart()
-    mensagem['From'] = settings.EMAIL_HOST_USER
-    mensagem['To'] = destinatario
-    mensagem['Subject'] = assunto
-
-    # Adicione o corpo do email
-    mensagem.attach(MIMEText(corpo, 'plain'))
-
-    # Crie uma conexão com o servidor SMTP
-    conexao = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
-    conexao.starttls()
-    conexao.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
-
-    # Envie o email
-    conexao.send_message(mensagem)
-
-    # Feche a conexão
-    conexao.quit()
+    send_mail(
+        subject=assunto,
+        message=corpo,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        recipient_list=destinatario,
+        fail_silently=False
+    )
 
 
 @login_required(login_url='/login')
 def notificacoes(request):
     criancas = Cadastro_Crianca.objects.all()
     mensagens = []
-
     for c in criancas:
         if (c.nr_nascido_vivo) == int(request.user.username):
             
             data_atual = date.today()   
             data_ultima_consulta = Cadastro_Consultas_Medicas.objects.last().data_consulta_med
             vacinas_tomadas = Cadastro_Vacina_Aplicada.objects.all()
-
             tempo_consulta_meses = (data_atual - data_ultima_consulta).days//30
             idade_meses = (data_atual - c.data_nasc).days // 30
 
             if tempo_consulta_meses > 3:
                 mensagens.append(f"Faz mais de {tempo_consulta_meses} meses da sua última consulta médica...Não está na hora de marcar outra?")
-            
-            vacinas = {'BCG': 0, 'Adsorvida': 2, 'Influenza': 6}
 
+            vacinas = {'BCG': 0, 'Adsorvida': 2, 'Influenza': 6}
             for v in vacinas_tomadas:
                 nome_vacina_aplicada = v.nome_vacina
             for nome_vacina, idade_recomendada in vacinas.items():
@@ -188,16 +169,17 @@ def notificacoes(request):
                         mensagens.append(f"A vacina {nome_vacina} do(a) {c.nome_crianca} está atrasada. Procure um posto de saúde mais próximo!")
 
             #envio email
-            destinatarios = ['isamoresco@gmail.com', 'jecarolfagundes@gmail.com', 'leo.freiro@gmail.com', 'rfl_mello@hotmail.com']
-            destinatarios_string = ', '.join(destinatarios)
+            destinatarios = ['isamoresco@gmail.com']
+            # destinatarios_string = ', '.join(destinatarios)
             assunto = 'Notificação - Caderneta Digital'
-            corpo = '\n\n'.join(mensagens)
+            # corpo = '\n\n'.join(mensagens)
+            corpo = 'lele'
 
-            enviar_email(destinatarios_string, assunto, corpo) 
+            enviar_email(destinatarios, assunto, corpo) 
 
             context = {'mensagens' : mensagens}
             return render(request, 'notificacoes.html', context)
-
+        
 
 @login_required(login_url='/login')
 def list_observacoes(request):
@@ -224,7 +206,6 @@ def submit_observacoes(request):
 @login_required(login_url='/login')
 def dados_pessoais(request):
     criancas = Cadastro_Crianca.objects.all()
-
     for c in criancas:
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
             crianca = c
@@ -238,17 +219,13 @@ def dados_pessoais(request):
 def medidas(request):
     # para pegar do banco tem que utilizar o nome da model.objects.all() -> para pegar todos os objetos cadastrados
     crianca = Cadastro_Crianca.objects.all()
-
     for c in crianca:
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
-
             evolucao = Cadastro_Evolucao_Crianca.objects.filter(crianca=c)
             imc = 0
-
             for i in evolucao:
                 altura_metros = i.estatura *0.01
                 imc = round(i.peso/altura_metros ** 2, 1)
-
                 if imc < 18.5:
                     i.classificacao_imc = 'Abaixo do peso normal'
                 elif 18.5 < imc < 24.9:
@@ -261,7 +238,6 @@ def medidas(request):
                     i.classificacao_imc = 'Obesidade classe ||'
                 else:
                     i.classificacao_imc = 'Obesidade classe |||'
-
             # sempre que for passar alguma variável para o html, tem que passar por dicionário (geralmente chamado context)
     context = {'evolucao': evolucao, 'imc' : imc}
     return render(request, 'medidas.html', context)
@@ -270,11 +246,9 @@ def medidas(request):
 @login_required(login_url='/login')
 def historico_vacinas(request):
     crianca = Cadastro_Crianca.objects.all()
-
     for c in crianca:
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
             vacinas = Cadastro_Vacina_Aplicada.objects.filter(crianca=c)
-
     context = {'vacinas': vacinas}
     return render(request, 'historico_vacinas.html', context)
 
@@ -283,7 +257,6 @@ def historico_vacinas(request):
 def historico_consultas_medicas(request):
     # para pegar do banco tem que utilizar o nome da model.objects.all() -> para pegar todos os objetos cadastrados
     crianca = Cadastro_Crianca.objects.all()
-
     for c in crianca:
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
             hist_med = Cadastro_Consultas_Medicas.objects.all()
@@ -299,11 +272,9 @@ def historico_consultas_medicas(request):
 @login_required(login_url='/login')
 def historico_consultas_odontologicas(request):
     crianca = Cadastro_Crianca.objects.all()
-
     for c in crianca:
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
             consultas = Cadastro_Consultas_Odontologicas.objects.filter(crianca=c)
-
     context = {'consultas': consultas}
     return render(request, 'historico_consultas_odont.html', context)
 
@@ -317,23 +288,17 @@ def historico_consultas_odontologicas(request):
 #         data_obs = request.POST.get('data_obs')
 #         inter_obs = request.POST.get('inter_obs')
 #         obs = request.POST.get('obs')
-
 #     #falta terminar       
 #     return HttpResponse('Usuário cadastrado com sucesso!')
-
-
 # @login_required(login_url="/login")
 # def cadastro_consulta(request):
-
 #     nascidoVivo = request.POST.get('nroNascidoVivo')
 #     medico = request.POST.get('medico')
 #     dataConsulta = request.POST.get('dataConsulta')
 #     sintomas = request.POST.get('sintomas')
 #     obs = request.POST.get('obs')
 #     crianca = Cadastro_Crianca.objects.filter(nr_nascido_vivo=nascidoVivo)
-
 #     consulta = Cadastro_Consultas_Medicas.objects.create(crianca = crianca, medico = medico, unidade_atendimento = 0, data_consulta_med = dataConsulta, descricao = sintomas, obs = obs)
 #     consulta.save()
-
 #     context = {'nomeCrianca': crianca}
 #     return render(request, 'cadastro_consulta.html', context)
