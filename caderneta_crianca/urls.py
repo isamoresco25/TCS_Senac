@@ -11,6 +11,7 @@ urlpatterns = [
     path('sair', views.logout_user),
     # path('login', views.login, name='login'),
     path('esqueci_senha', views.esqueci_senha, name='esqueci_senha'),
+    path('submit_obs', views.submit_observacoes, name='submit_obs'),
 
     path('', views.home, name='home'),
     path('home', views.home, name='home'),

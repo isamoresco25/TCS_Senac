@@ -96,7 +96,15 @@ def direitos_responsaveis(request):
 
 @login_required(login_url='/login')
 def grafico_crescimento(request):
-    return render(request, 'grafico_crescimento.html')
+    evolucao_crianca = Cadastro_Evolucao_Crianca.objects.all()
+    dados_grafico_cresc = [['Idade (meses)', 'Altura']]
+    for e in evolucao_crianca:
+        idade_meses = round((e.idade * 12), 2)
+        dados_grafico_cresc.append([idade_meses, e.estatura])
+    context = {
+                'dados_grafico_cresc' : dados_grafico_cresc
+            }
+    return render(request, 'grafico_crescimento.html', context)
 
 
 # login_required é uma biblioteca para só acessar a tela se estiver logado
@@ -190,16 +198,16 @@ def list_observacoes(request):
     return render(request, 'observacoes.html', context)
 
 def submit_observacoes(request):
+    c = Cadastro_Crianca.objects.get(nr_nascido_vivo=int(request.user.username))
     if request.POST:
         
-        c = Cadastro_Crianca.objects.get(nr__nascido_vivo=int(request.user.username))
         data = request.POST.get('data_obs')
         intercorrencia = request.POST.get('inter_obs')
         observacao = request.POST.get('obs')
         
         nova_obs = Observacoes(crianca = c,  data_obs = data, inter_obs = intercorrencia, obs = observacao)
         nova_obs.save()
-        1/0
+        
     return redirect('/')
 
 
@@ -221,11 +229,11 @@ def medidas(request):
     crianca = Cadastro_Crianca.objects.all()
     for c in crianca:
         if (c.nr_nascido_vivo) == int(request.user.username): #request.user.username pega o username do usuario logado (que é o numero nascido vivo)
-            evolucao = Cadastro_Evolucao_Crianca.objects.filter(crianca=c)
-            imc = 0
+            evolucao = Cadastro_Evolucao_Crianca.objects.all()
+            
             for i in evolucao:
-                altura_metros = i.estatura *0.01
-                imc = round(i.peso/altura_metros ** 2, 1)
+                print(i.imc)
+                imc = i.imc
                 if imc < 18.5:
                     i.classificacao_imc = 'Abaixo do peso normal'
                 elif 18.5 < imc < 24.9:
@@ -239,7 +247,7 @@ def medidas(request):
                 else:
                     i.classificacao_imc = 'Obesidade classe |||'
             # sempre que for passar alguma variável para o html, tem que passar por dicionário (geralmente chamado context)
-    context = {'evolucao': evolucao, 'imc' : imc}
+    context = {'evolucao': evolucao,}
     return render(request, 'medidas.html', context)
 
 

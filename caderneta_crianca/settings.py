@@ -100,10 +100,10 @@ LOGOUT_REDIRECT_URL = '/contas/login'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.office365.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'digitalcaderneta@outlook.com'
-EMAIL_HOST_PASSWORD = 'Cadernetadigital@2023'
+EMAIL_HOST_USER = 'cadernetadigital@outlook.com'
+EMAIL_HOST_PASSWORD = 'Digitalcaderneta@2023'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'digitalcaderneta@outlook.com'
+DEFAULT_FROM_EMAIL = 'cadernetadigital@outlook.com'
 
 
 

@@ -4,40 +4,38 @@
 
 {% block content %}
 <div class="content">
-    <div class="grafico">
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
+    <div class="col-md-12">
+        <h1 style="color: #277064; padding-top: 2%;">Gráfico Crescimento Infantil</h1>
+        <div class="grafico_cresc" style="padding-top: 5%;">
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            <script type="text/javascript">
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
 
-        function drawChart() {
-            var data = google.visualization.arrayToDataTable([
-            ['Idade', 'Estimativa', 'Altura'],
+                function drawChart() {
+                    var data = google.visualization.arrayToDataTable({{ dados_grafico_cresc|safe }});
 
-            ['1 ano',  100,      150],
-            ['2 anos',  700,      750],
-            ['3 anos',  1000,       1050],
-            ['4 anos',  1200,      1250],
-            ['5 anos',  1500,      1550]
-            ]);
+                    var options = {
+                        title: 'Curva de Crescimento Infantil',
+                        curveType: 'function',
+                        legend: { position: 'bottom' },
+                        vAxis: { title: 'Valores' },
+                        hAxis: { title: 'Idade (meses)' }
+                    };
 
-            var options = {
-            title: 'Gráfico Crescimento',
-            curveType: 'function',
-            legend: { position: 'bottom' }
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-
-            chart.draw(data, options);
-        }
-        </script>
-    </div>
+                    var chart = new google.visualization.LineChart(document.getElementById('chart_cres'));
+                    chart.draw(data, options);
+                }
+            </script>
+            
+            <div class="col-sm-12" style="text-align: center;">
+                <div id="chart_cres" style="width: 100%; height: 43%"></div>
+            </div>
+        </div>
     
-    <h1 style="color: #277064; padding-top: 2%;">Gráfico Crescimento Infantil</h1>
     <div class="row" style="padding-top: 2%;">
         <div class="col-sm-12" style="text-align: center;">
-            <div id="curve_chart" style="width: 100%; height: 500px"></div>
+            <div id="chart_cres" style="width: 100%; height: 500px"></div>
         </div>
     </div>
 </div>
